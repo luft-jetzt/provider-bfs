@@ -53,9 +53,13 @@ class TestCommand extends Command
 
         $image = $imagine->open('tmp.png');
 
+        $stepSize = $this->detectStepSize($image);
+
         $currentPoint = $this->detectCurrentPoint($image);
 
-        dd($currentPoint);
+        $y = 385 - $currentPoint->getY() + 50;
+
+        dd($y / $stepSize);
 
         return Command::SUCCESS;
     }
@@ -90,5 +94,40 @@ class TestCommand extends Command
         }
 
         return new Point($x, $y);
+    }
+
+    protected function detectMaxUvIndex(ImageInterface $image): int
+    {
+        $size = $image->getSize();
+        $width = $size->getWidth();
+        $height = $size->getHeight();
+
+        $counter = 1;
+
+        for ($y = $height - 55; $y > 55; --$y) {
+            $point = new Point(81, $y);
+            $color = $image->getColorAt($point);
+
+            $image->draw()->dot($point, $image->palette()->color('f00'));
+
+
+            if ($color->getRed() < 200 || $color->getGreen() < 200 || $color->getRed() < 200) {
+                ++$counter;
+            }
+        }
+        $image->save('tmp2.png');
+
+        $maxUvIndex = floor(($counter - 1) / 2);
+
+        return $maxUvIndex;
+    }
+
+    protected function detectStepSize(ImageInterface $image): int
+    {
+        $maxUvIndex = $this->detectMaxUvIndex($image);
+
+        $size = round(385 / ($maxUvIndex * 2));
+
+        return $size;
     }
 }
