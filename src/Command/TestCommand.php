@@ -51,7 +51,7 @@ class TestCommand extends Command
 
         $imagine = new Imagine();
 
-        $image = $imagine->open('tmp.png');
+        $image = $imagine->open('tmp4.png');
 
         $stepSize = $this->detectStepSize($image);
 
@@ -59,7 +59,7 @@ class TestCommand extends Command
 
         $y = 385 - $currentPoint->getY() + 50;
 
-        dd($y / $stepSize);
+        dd((($y / $stepSize) + 1) / 2);
 
         return Command::SUCCESS;
     }
@@ -84,7 +84,7 @@ class TestCommand extends Command
             $color = $image->getColorAt($point);
 
             $image->draw()->dot($point, $image->palette()->color('f00'));
-            $image->save('tmp2.png');
+            $image->save('tmp4-redline.png');
 
             if ($color->getRed() == $color->getGreen() && $color->getRed() == $color->getBlue()) {
                 ++$y;
@@ -111,11 +111,11 @@ class TestCommand extends Command
             $image->draw()->dot($point, $image->palette()->color('f00'));
 
 
-            if ($color->getRed() < 200 || $color->getGreen() < 200 || $color->getRed() < 200) {
+            if ($color->getRed() < 230 || $color->getGreen() < 230 || $color->getRed() < 230) {
                 ++$counter;
             }
         }
-        $image->save('tmp2.png');
+        $image->save('tmp4-redline.png');
 
         $maxUvIndex = floor(($counter - 1) / 2);
 
