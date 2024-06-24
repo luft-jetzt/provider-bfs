@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Bfs\Station\Namer;
 use App\Bfs\Website\StationLinkExtractorInterface;
 use App\Bfs\Website\StationPageParserInterface;
+use Caldera\LuftApiBundle\Api\StationApiInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,7 +22,8 @@ class StationLoadCommand extends Command
 {
     public function __construct(
         private readonly StationLinkExtractorInterface $linkExtractor,
-        private readonly StationPageParserInterface $pageParser
+        private readonly StationPageParserInterface $pageParser,
+        private readonly StationApiInterface $stationApi
     )
     {
         parent::__construct();
@@ -40,6 +42,8 @@ class StationLoadCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('arg1');
 
+        dd($this->stationApi->getStations());
+
         $io->info('Loading html page from bfs');
 
         $resultList = $this->linkExtractor->parseStationLinks();
@@ -57,7 +61,7 @@ class StationLoadCommand extends Command
             $stationList[] = $station;
         }
 
-        dd($stationList);
+
 
         return Command::SUCCESS;
     }
