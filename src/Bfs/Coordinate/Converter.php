@@ -2,8 +2,6 @@
 
 namespace App\Bfs\Coordinate;
 
-use Couchbase\Coordinate;
-
 class Converter
 {
     private function __construct()
@@ -11,7 +9,7 @@ class Converter
 
     }
 
-    public static function convert(string $coordinateString): array
+    public static function convert(string $coordinateString): Coord
     {
         preg_match_all('/(\d+)°(\d+)\'(\d+)"/', $coordinateString, $matches, PREG_SET_ORDER);
 
@@ -26,9 +24,9 @@ class Converter
         $decimalLatitude = $latDeg + ($latMin / 60) + ($latSec / 3600);
         $decimalLongitude = $lonDeg + ($lonMin / 60) + ($lonSec / 3600);
 
-        return [
-            'lat' => round($decimalLatitude, 10),
-            'lng' => round($decimalLongitude, 10),
-        ];
+        $latitude = round($decimalLatitude, 10);
+        $longitude = round($decimalLongitude, 10);
+
+        return new Coord($latitude, $longitude);
     }
 }
