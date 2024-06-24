@@ -4,11 +4,24 @@ namespace App\Bfs\Website;
 
 class StationModel
 {
+    private string $stationCode;
     private string $operator;
     private string $location;
     private int $altitude;
     private float $latitude;
     private float $longitude;
+
+    public function getStationCode(): string
+    {
+        return $this->stationCode;
+    }
+
+    public function setStationCode(string $stationCode): self
+    {
+        $this->stationCode = $stationCode;
+
+        return $this;
+    }
 
     public function getOperator(): string
     {

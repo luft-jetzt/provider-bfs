@@ -19,14 +19,16 @@ class StationPageParser implements StationPageParserInterface
         $station = new StationModel();
 
         $coordinateString = $crawler->filter('table tbody tr:nth-child(4) td:nth-child(2)')->html();
-        [$latitude, $longitude] = Converter::convert($coordinateString);
+
+        dump($url, $coordinateString);
+        $coord = Converter::convert($coordinateString);
 
         $station
             ->setOperator($crawler->filter('table tbody tr:nth-child(1) td:nth-child(2)')->text())
             ->setLocation($crawler->filter('table tbody tr:nth-child(2) td:nth-child(2)')->text())
             ->setAltitude((int) $crawler->filter('table tbody tr:nth-child(3) td:nth-child(2)')->text())
-            ->setLatitude($latitude)
-            ->setLongitude($longitude)
+            ->setLatitude($coord->getLatitude())
+            ->setLongitude($coord->getLongitude())
         ;
 
         return $station;
