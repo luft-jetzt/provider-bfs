@@ -30,10 +30,7 @@ class FetchCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+        $this->addArgument('station-code', InputArgument::OPTIONAL, 'Specify station code to fetch');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -44,18 +41,39 @@ class FetchCommand extends Command
         $cacheItem = $cache->getItem(CacheInterface::CACHE_KEY);
         $stationList = $cacheItem->get();
 
+        if ($input->getArgument('station-code')) {
+            $stationList = $this->processStationList($input, $stationList);
+        }
+
         $valueList = [];
+
+        $io->progressStart(count($stationList));
 
         /** @var StationModel $station */
         foreach ($stationList as $station) {
             $value = $this->valueFetcher->fromStation($station);
             $valueList[$station->getStationCode()] = $value;
+
+            $io->progressAdvance();
         }
 
-        $io->table(['Station Code', 'Date Time', 'UV Index'], array_map(function(Value $value): array {
-            return [$value->getStationCode(), $value->getDateTime()->format('Y-m-d H:i:s'), $value->getValue()];
-        }, $valueList));
+        $io->progressFinish();
+
+        if ($output->isVerbose()) {
+            $io->table(['Station Code', 'Date Time', 'UV Index'], array_map(function(Value $value): array {
+                return [$value->getStationCode(), $value->getDateTime()->format('Y-m-d H:i:s'), $value->getValue()];
+            }, $valueList));
+        }
 
         return Command::SUCCESS;
+    }
+
+    protected function processStationList(InputInterface $input, array $stationList): array
+    {
+        $specifiedStationCode = $input->getArgument('station-code') ?? '';
+        $specifiedStationCodeList = explode(',', $specifiedStationCode);
+        $specifiedStationCodeList = array_flip($specifiedStationCodeList);
+
+        return array_intersect_key($stationList, $specifiedStationCodeList);
     }
 }
