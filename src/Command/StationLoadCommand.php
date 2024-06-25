@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'luft:station-load',
+    name: 'luft:station:load',
     description: 'Add a short description for your command',
 )]
 class StationLoadCommand extends Command
@@ -42,7 +42,7 @@ class StationLoadCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('arg1');
 
-        dd($this->stationApi->getStations());
+        $existingStationList = $this->stationApi->getStations('solar');
 
         $io->info('Loading html page from bfs');
 
@@ -50,7 +50,7 @@ class StationLoadCommand extends Command
 
         $io->info(sprintf('Found %d results', count($resultList)));
 
-        $stationList = [];
+        $newStationList = [];
 
         foreach ($resultList as $stationResult) {
             $station = $this->pageParser->parse($stationResult['href']);
@@ -58,9 +58,14 @@ class StationLoadCommand extends Command
             $stationCode = Namer::generate($station);
             $station->setStationCode($stationCode);
 
-            $stationList[] = $station;
+            if (array_key_exists($stationCode, $existingStationList)) {
+                continue;
+            }
+
+            $newStationList[] = $station;
         }
 
+        dd($newStationList);
 
 
         return Command::SUCCESS;

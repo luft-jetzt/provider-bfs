@@ -1,57 +1,22 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace App\Command;
+namespace App\Bfs\Fetcher;
 
+use App\Bfs\Website\StationModel;
+use Caldera\LuftModel\Model\Value;
 use Imagine\Gd\Imagine;
 use Imagine\Image\ImageInterface;
-use Imagine\Image\Palette\Color\RGB;
 use Imagine\Image\Point;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpClient\HttpClient;
 
-#[AsCommand(
-    name: 'TestCommand',
-    description: 'Add a short description for your command',
-)]
-class TestCommand extends Command
+class ValueFetcher implements ValueFetcherInterface
 {
-    public function __construct()
+    public function fromStation(StationModel $stationModel): Value
     {
-        parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
-
-        $imagePath = 'https://uvi.bfs.de/Tagesgrafiken/EEr_Lueneburg_today.png';
-
-        $arrContextOptions= [
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-            ],
-        ];
-
-        //file_put_contents('tmp.png', file_get_contents($imagePath, false, stream_context_create($arrContextOptions)));
-
         $imagine = new Imagine();
 
-        $image = $imagine->open('tmp4.png');
+        $binaryImagecontent = $this->loadImageContent($stationModel->getCurrentImageUrl());
+        $image = $imagine->load($binaryImagecontent);
 
         $stepSize = $this->detectStepSize($image);
 
@@ -59,9 +24,25 @@ class TestCommand extends Command
 
         $y = 385 - $currentPoint->getY() + 50;
 
-        dd((($y / $stepSize) + 1) / 2);
+        $uvIndex = (($y / $stepSize) + 1) / 2;
 
-        return Command::SUCCESS;
+        $value = new Value();
+        $value
+            ->setStationCode($stationModel->getStationCode())
+            ->setPollutant('UV')
+            ->setDateTime(new \DateTime())
+            ->setValue($uvIndex)
+        ;
+
+        return $value;
+    }
+
+    protected function loadImageContent(string $url): string
+    {
+        $httpClient = HttpClient::create();
+        $response = $httpClient->request('GET', $url);
+
+        return $response->getContent();
     }
 
     protected function detectCurrentPoint(ImageInterface $image): Point
@@ -96,7 +77,7 @@ class TestCommand extends Command
         return new Point($x, $y);
     }
 
-    protected function detectMaxUvIndex(ImageInterface $image): int
+    protected function detectMaxUvIndex(ImageInterface $image): float
     {
         $size = $image->getSize();
         $width = $size->getWidth();
@@ -122,7 +103,7 @@ class TestCommand extends Command
         return $maxUvIndex;
     }
 
-    protected function detectStepSize(ImageInterface $image): int
+    protected function detectStepSize(ImageInterface $image): float
     {
         $maxUvIndex = $this->detectMaxUvIndex($image);
 
