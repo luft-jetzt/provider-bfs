@@ -2,30 +2,37 @@
 
 namespace App\Bfs\Website;
 
-class StationModel
+use Caldera\LuftModel\Model\Station as CalderaLuftStationModel;
+
+class StationModel extends CalderaLuftStationModel
 {
-    private string $stationCode;
+    private string $bfsPageUrl;
+    private string $currentImageUrl;
     private string $operator;
     private string $location;
-    private int $altitude;
-    private float $latitude;
-    private float $longitude;
 
-    public function getStationCode(): string
+    public function setBfsPageUrl(string $bfsPageUrl): self
     {
-        return $this->stationCode;
-    }
-
-    public function setStationCode(string $stationCode): self
-    {
-        $this->stationCode = $stationCode;
+        $this->bfsPageUrl = $bfsPageUrl;
 
         return $this;
     }
 
-    public function getOperator(): string
+    public function getBfsPageUrl(): string
     {
-        return $this->operator;
+        return $this->bfsPageUrl;
+    }
+
+    public function setCurrentImageUrl(string $currentImageUrl): self
+    {
+        $this->currentImageUrl = $currentImageUrl;
+
+        return $this;
+    }
+
+    public function getCurrentImageUrl(): string
+    {
+        return $this->currentImageUrl;
     }
 
     public function setOperator(string $operator): self
@@ -35,9 +42,9 @@ class StationModel
         return $this;
     }
 
-    public function getLocation(): string
+    public function getOperator(): string
     {
-        return $this->location;
+        return $this->operator;
     }
 
     public function setLocation(string $location): self
@@ -47,39 +54,8 @@ class StationModel
         return $this;
     }
 
-    public function getAltitude(): int
+    public function getLocation(): string
     {
-        return $this->altitude;
-    }
-
-    public function setAltitude(int $altitude): self
-    {
-        $this->altitude = $altitude;
-
-        return $this;
-    }
-
-    public function getLatitude(): float
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(float $latitude): self
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    public function getLongitude(): float
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(float $longitude): self
-    {
-        $this->longitude = $longitude;
-
-        return $this;
+        return $this->location;
     }
 }
