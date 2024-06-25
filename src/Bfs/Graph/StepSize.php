@@ -4,7 +4,7 @@ namespace App\Bfs\Graph;
 
 use Imagine\Image\ImageInterface;
 
-class StepSizeDetector
+class StepSize
 {
     private function __construct()
     {
@@ -13,7 +13,7 @@ class StepSizeDetector
 
     public static function detectStepSize(ImageInterface $image): float
     {
-        $maxUvIndex = MaxUvIndexDetector::detectMaxUvIndex($image);
+        $maxUvIndex = MaxUvIndex::detectMaxUvIndex($image);
 
         $size = round(385 / ($maxUvIndex * 2));
 

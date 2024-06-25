@@ -2,13 +2,11 @@
 
 namespace App\Bfs\Fetcher;
 
-use App\Bfs\Graph\PointDetector;
-use App\Bfs\Graph\StepSizeDetector;
+use App\Bfs\Graph\Point;
+use App\Bfs\Graph\StepSize;
 use App\Bfs\Website\StationModel;
 use Caldera\LuftModel\Model\Value;
 use Imagine\Gd\Imagine;
-use Imagine\Image\ImageInterface;
-use Imagine\Image\Point;
 use Symfony\Component\HttpClient\HttpClient;
 
 class ValueFetcher implements ValueFetcherInterface
@@ -20,9 +18,9 @@ class ValueFetcher implements ValueFetcherInterface
         $binaryImagecontent = $this->loadImageContent($stationModel->getCurrentImageUrl());
         $image = $imagine->load($binaryImagecontent);
 
-        $stepSize = StepSizeDetector::detectStepSize($image);
+        $stepSize = StepSize::detectStepSize($image);
 
-        $currentPoint = PointDetector::detectCurrentPoint($image);
+        $currentPoint = Point::detectCurrentPoint($image);
 
         $y = 385 - $currentPoint->getY() + 50;
 

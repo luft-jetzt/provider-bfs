@@ -5,8 +5,11 @@ namespace App\Bfs\Graph;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Point;
 
-class MaxUvIndexDetector
+class MaxUvIndex
 {
+    private const int PADDING_LEFT = 82;
+    private const int THRESHOLD = 120;
+
     private function __construct()
     {
 
@@ -20,17 +23,15 @@ class MaxUvIndexDetector
         $counter = 1;
 
         for ($y = $height - 55; $y > 55; --$y) {
-            $point = new Point(81, $y);
+            $point = new Point(self::PADDING_LEFT, $y);
             $color = $image->getColorAt($point);
 
-            $image->draw()->dot($point, $image->palette()->color('f00'));
-
-
-            if ($color->getRed() < 230 || $color->getGreen() < 230 || $color->getRed() < 230) {
+            if ($color->getRed() < self::THRESHOLD || $color->getGreen() < self::THRESHOLD || $color->getRed() < self::THRESHOLD) {
                 ++$counter;
+
+                $y -= 5; // jump five pixels down to avoid detecting some grey artifacts as scale again
             }
         }
-        //$image->save('tmp4-redline.png');
 
         $maxUvIndex = floor(($counter - 1) / 2);
 
