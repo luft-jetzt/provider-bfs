@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Coordinate;
+namespace App\Tests\Unit\Coordinate;
 
 use App\Bfs\Coordinate\Coord;
 use PHPUnit\Framework\TestCase;

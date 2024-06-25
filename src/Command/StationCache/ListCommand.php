@@ -23,8 +23,15 @@ class ListCommand extends AbstractCommand
 
         $io->info(sprintf('There are %d stations saved in cache', count($stationList)));
 
-        $io->table(['Station Code', 'Latitude', 'Longitude', 'Url', 'Image'], array_map(function(StationModel $station): array {
-            return [$station->getStationCode(), $station->getLatitude(), $station->getLongitude(), $station->getBfsPageUrl(), $station->getCurrentImageUrl()];
+        $io->table(['Station Code', 'Title', 'Latitude', 'Longitude', 'Url', 'Image'], array_map(function(StationModel $station): array {
+            return [
+                $station->getStationCode(),
+                $station->getTitle(),
+                $station->getLatitude(),
+                $station->getLongitude(),
+                $station->getBfsPageUrl(),
+                $station->getCurrentImageUrl()
+            ];
         }, $stationList));
 
         return Command::SUCCESS;

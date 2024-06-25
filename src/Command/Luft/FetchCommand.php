@@ -60,8 +60,15 @@ class FetchCommand extends Command
         $io->progressFinish();
 
         if ($output->isVerbose()) {
-            $io->table(['Station Code', 'Date Time', 'UV Index'], array_map(function(Value $value): array {
-                return [$value->getStationCode(), $value->getDateTime()->format('Y-m-d H:i:s'), $value->getValue()];
+            $io->table(['Station Code', 'Station Title', 'Date Time', 'UV Index'], array_map(function(Value $value) use ($stationList): array
+            {
+                $stationTitle = $stationList[$value->getStationCode()]->getTitle();
+                return [
+                    $value->getStationCode(),
+                    $stationTitle,
+                    $value->getDateTime()->format('Y-m-d H:i:s'),
+                    $value->getValue()
+                ];
             }, $valueList));
         }
 
