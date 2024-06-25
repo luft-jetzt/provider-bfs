@@ -19,11 +19,13 @@ class StationPageParser implements StationPageParserInterface
         $station = new StationModel();
 
         $coordinateString = $crawler->filter('table tbody tr:nth-child(4) td:nth-child(2)')->html();
+        $currentImageUrl = $crawler->filter('#heute .picture.linksOhne img')->attr('src');
 
-        dump($url, $coordinateString);
         $coord = Converter::convert($coordinateString);
 
         $station
+            ->setBfsPageUrl($url)
+            ->setCurrentImageUrl($currentImageUrl)
             ->setOperator($crawler->filter('table tbody tr:nth-child(1) td:nth-child(2)')->text())
             ->setLocation($crawler->filter('table tbody tr:nth-child(2) td:nth-child(2)')->text())
             ->setAltitude((int) $crawler->filter('table tbody tr:nth-child(3) td:nth-child(2)')->text())

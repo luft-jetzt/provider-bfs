@@ -20,7 +20,7 @@ class Namer
         'Bundesamt für Strahlenschutz (BfS) Deutscher Wetterdienst (DWD)' => 'BFS',
         'Bundesamt für Strahlenschutz (BfS) Deutsche Lebens-Rettungs-Gesellschaft (DLRG)' => 'BFS',
         'Bundesanstalt für Arbeitsschutz und Arbeitsmedizin (BAuA)' => 'BAUA',
-        'Bundesamt für Strahlenschutz (BfS) Bundesministerium für Umwelt, Naturschutz, nukleare Sicherheit und Verbraucherschutz (BMUV)',
+        'Bundesamt für Strahlenschutz (BfS) Bundesministerium für Umwelt, Naturschutz, nukleare Sicherheit und Verbraucherschutz (BMUV)' => 'BFS',
     ];
 
     private function __construct()
