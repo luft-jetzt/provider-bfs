@@ -1,19 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Command\Luft;
 
 use App\Bfs\Cache\CacheInterface;
 use App\Bfs\Fetcher\ValueFetcherInterface;
-use App\Bfs\Website\StationLinkExtractorInterface;
 use App\Bfs\Website\StationModel;
-use App\Bfs\Website\StationPageParserInterface;
+use Caldera\LuftApiBundle\Api\ValueApi;
 use Caldera\LuftModel\Model\Value;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -23,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class FetchCommand extends Command
 {
-    public function __construct(private readonly ValueFetcherInterface $valueFetcher)
+    public function __construct(private readonly ValueFetcherInterface $valueFetcher, private readonly ValueApi $valueApi)
     {
         parent::__construct();
     }
@@ -71,6 +69,8 @@ class FetchCommand extends Command
                 ];
             }, $valueList));
         }
+
+        $this->valueApi->putValues($valueList);
 
         return Command::SUCCESS;
     }
