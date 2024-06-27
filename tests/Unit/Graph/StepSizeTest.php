@@ -1,19 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Tests\Unit\Graph;
 
-use App\Bfs\Graph\MaxUvIndex;
 use App\Bfs\Graph\StepSize;
 use Imagine\Gd\Imagine;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class StepSizeTest extends TestCase
 {
-
-
-    /**
-     * @dataProvider graphFilenameProvider
-     */
+    #[DataProvider('graphFilenameProvider')]
     public function testStepSize(string $graphFilename, int $expectedStepSize): void
     {
         $imagine = new Imagine();

@@ -3,13 +3,12 @@
 namespace App\Tests\Unit\Coordinate;
 
 use App\Bfs\Coordinate\Converter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ConverterTest extends TestCase
 {
-    /**
-     * @dataProvider coordinateProvider
-     */
+    #[DataProvider('coordinateProvider')]
     public function testCoordinateConversion(string $coordinateString, float $expectedLatitude, float $expectedLongitude): void
     {
         $coord = Converter::convert($coordinateString);
@@ -18,7 +17,7 @@ class ConverterTest extends TestCase
         $this->assertEquals($expectedLongitude, $coord->getLongitude());
     }
 
-    public function coordinateProvider(): array
+    public static function coordinateProvider(): array
     {
         return [
             ["50°25'26\"  Nord<br>\n7°25'16\"  Ost", 50.4238888889, 7.4211111111],
