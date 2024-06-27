@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Bfs\Graph;
 
@@ -30,9 +30,6 @@ class Point
         for ($y = $height - 49; $y > 0; --$y) {
             $point = new ImaginePoint($x, $y);
             $color = $image->getColorAt($point);
-
-            //$image->draw()->dot($point, $image->palette()->color('f00'));
-            //$image->save('tmp4-redline.png');
 
             if ($color->getRed() == $color->getGreen() && $color->getRed() == $color->getBlue()) {
                 ++$y;
