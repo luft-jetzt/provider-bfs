@@ -25,6 +25,7 @@ class HourRangeTest extends TestCase
     {
         return [
             [__DIR__ . '/../../graph/hamburg1.png', 6, 21],
+            [__DIR__ . '/../../graph/lueneburg5.png', 7, 18],
         ];
     }
 }

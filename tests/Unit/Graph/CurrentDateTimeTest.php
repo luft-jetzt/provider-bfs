@@ -32,6 +32,8 @@ class CurrentDateTimeTest extends TestCase
             [__DIR__ . '/../../graph/lueneburg2.png', (new \DateTime())->setTime(14, 9)],
             [__DIR__ . '/../../graph/lueneburg3.png', (new \DateTime())->setTime(15, 9)],
             [__DIR__ . '/../../graph/lueneburg4.png', (new \DateTime())->setTime(15, 0)],
+            [__DIR__ . '/../../graph/lueneburg5.png', (new \DateTime())->setTime(17, 58)],
+            [__DIR__ . '/../../graph/lueneburg6.png', (new \DateTime())->setTime(11, 9)],
             [__DIR__ . '/../../graph/schneefernhaus1.png', (new \DateTime())->setTime(9, 50)],
             [__DIR__ . '/../../graph/schneefernhaus2.png', (new \DateTime())->setTime(15, 10)],
         ];

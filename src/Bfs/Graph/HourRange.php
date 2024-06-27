@@ -6,7 +6,10 @@ use Imagine\Image\ImageInterface;
 
 class HourRange
 {
-    private const NOON_HOUR = 13;
+    private const array RANGE_MAPPING = [
+        12 => [7, 18],
+        16 => [6, 21],
+    ];
 
     private function __construct()
     {
@@ -17,9 +20,13 @@ class HourRange
     {
         $xScaleWidth = Scale::sizeX($image);
 
-        $startHour = self::NOON_HOUR + 1 - $xScaleWidth / 2;
-        $endHour = self::NOON_HOUR + $xScaleWidth / 2;
+        if (array_key_exists($xScaleWidth, self::RANGE_MAPPING)) {
+            return new HourRangeModel(
+                self::RANGE_MAPPING[$xScaleWidth][0],
+                self::RANGE_MAPPING[$xScaleWidth][1]
+            );
+        }
 
-        return new HourRangeModel($startHour, $endHour);
+        throw new \Exception(sprintf('Invalid scale width %d for hour range.', $xScaleWidth));
     }
 }
