@@ -95,12 +95,6 @@ class ValueFetcherTest extends TestCase
                 (new Carbon())->setTime(9, 3),
             ],
             [
-                __DIR__ . '/../../graph/sanktaugustin.png',
-                0,
-                (new Carbon())->setTime(5, 56),
-                (new Carbon())->setTime(5, 56),
-            ],
-            [
                 __DIR__ . '/../../graph/schneefernhaus1.png',
                 4.4,
                 (new Carbon())->setTime(9, 50),
@@ -113,5 +107,18 @@ class ValueFetcherTest extends TestCase
                 (new Carbon())->setTime(9, 3),
             ],
         ];
+    }
+
+    public function testMaintenance(): void
+    {
+        $stationModel = new StationModel();
+        $stationModel
+            ->setCurrentImageUrl(__DIR__ . '/../../graph/sanktaugustin.png')
+            ->setStationCode('TEST123')
+        ;
+
+        $valueFetcher = new ValueFetcher();
+
+        $this->assertNull($valueFetcher->fromStation($stationModel));
     }
 }

@@ -15,7 +15,7 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class ValueFetcher implements ValueFetcherInterface
 {
-    public function fromStation(StationModel $stationModel): Value
+    public function fromStation(StationModel $stationModel): ?Value
     {
         $binaryImagecontent = $this->loadImageContent($stationModel->getCurrentImageUrl());
 
@@ -33,7 +33,7 @@ class ValueFetcher implements ValueFetcherInterface
         ;
 
         if (Maintenance::isMaintenance($image)) {
-            return $value;
+            return null;
         }
 
         $hourRange = HourRange::calculate($image);

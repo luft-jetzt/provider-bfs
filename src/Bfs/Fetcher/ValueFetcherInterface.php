@@ -7,5 +7,5 @@ use Caldera\LuftModel\Model\Value;
 
 interface ValueFetcherInterface
 {
-    public function fromStation(StationModel $stationModel): Value;
+    public function fromStation(StationModel $stationModel): ?Value;
 }
