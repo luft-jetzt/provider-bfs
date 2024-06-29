@@ -39,6 +39,11 @@ class FetchCommand extends Command
         $cacheItem = $cache->getItem(CacheInterface::CACHE_KEY);
         $stationList = $cacheItem->get();
 
+        if (!$stationList) {
+            $io->error('No station list found in cache. Please load cache before fetching values.');
+            return Command::FAILURE;
+        }
+
         if ($input->getArgument('station-code')) {
             $stationList = $this->processStationList($input, $stationList);
         }
@@ -50,7 +55,10 @@ class FetchCommand extends Command
         /** @var StationModel $station */
         foreach ($stationList as $station) {
             $value = $this->valueFetcher->fromStation($station);
-            $valueList[$station->getStationCode()] = $value;
+
+            if ($value instanceof Value) {
+                $valueList[$station->getStationCode()] = $value;
+            }
 
             $io->progressAdvance();
         }
