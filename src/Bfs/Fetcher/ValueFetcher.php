@@ -27,7 +27,7 @@ class ValueFetcher implements ValueFetcherInterface
         $value = new Value();
         $value
             ->setStationCode($stationModel->getStationCode())
-            ->setPollutant('UV')
+            ->setPollutant('UVIndex')
             ->setDateTime($dateTime)
             ->setValue(0)
         ;
