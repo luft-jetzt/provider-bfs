@@ -2,7 +2,7 @@
 
 namespace App\Command\Station;
 
-use App\Command\StationCache\AbstractCommand;
+use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\StationApiInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

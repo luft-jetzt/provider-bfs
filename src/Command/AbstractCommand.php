@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Command\StationCache;
+namespace App\Command;
 
 use App\Bfs\Cache\CacheInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;

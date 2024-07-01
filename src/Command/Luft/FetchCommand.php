@@ -5,6 +5,7 @@ namespace App\Command\Luft;
 use App\Bfs\Cache\CacheInterface;
 use App\Bfs\Fetcher\ValueFetcherInterface;
 use App\Bfs\Website\StationModel;
+use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\ValueApi;
 use Caldera\LuftModel\Model\Value;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -19,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'luft:fetch',
     description: 'Add a short description for your command',
 )]
-class FetchCommand extends Command
+class FetchCommand extends AbstractCommand
 {
     public function __construct(private readonly ValueFetcherInterface $valueFetcher, private readonly ValueApi $valueApi)
     {
@@ -35,9 +36,7 @@ class FetchCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $cache = new FilesystemAdapter(CacheInterface::CACHE_NAMESPACE, CacheInterface::CACHE_TTL);
-        $cacheItem = $cache->getItem(CacheInterface::CACHE_KEY);
-        $stationList = $cacheItem->get();
+        $stationList = $this->getStationList();
 
         if (!$stationList) {
             $io->error('No station list found in cache. Please load cache before fetching values.');

@@ -3,6 +3,7 @@
 namespace App\Command\StationCache;
 
 use App\Bfs\Website\StationModel;
+use App\Command\AbstractCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
