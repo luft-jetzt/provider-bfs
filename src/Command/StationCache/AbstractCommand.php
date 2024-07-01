@@ -11,7 +11,7 @@ abstract class AbstractCommand extends Command
 {
     protected function createCache(): AdapterInterface
     {
-        return new FilesystemAdapter(CacheInterface::CACHE_NAMESPACE, CacheInterface::CACHE_TTL);
+        return new FilesystemAdapter(CacheInterface::CACHE_NAMESPACE, CacheInterface::CACHE_TTL, CacheInterface::CACHE_DIRECTORY);
     }
 
     protected function getStationList(): array
