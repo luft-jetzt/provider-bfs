@@ -16,7 +16,7 @@ abstract class AbstractCommand extends Command
 
     protected function getStationList(): array
     {
-        $cache = new FilesystemAdapter(CacheInterface::CACHE_NAMESPACE, CacheInterface::CACHE_TTL);
+        $cache = $this->createCache();
         $item = $cache->getItem(CacheInterface::CACHE_KEY);
         return $item->get();
     }
