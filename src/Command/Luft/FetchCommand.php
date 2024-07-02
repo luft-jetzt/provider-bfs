@@ -2,13 +2,11 @@
 
 namespace App\Command\Luft;
 
-use App\Bfs\Cache\CacheInterface;
 use App\Bfs\Fetcher\ValueFetcherInterface;
 use App\Bfs\Website\StationModel;
 use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\ValueApi;
 use Caldera\LuftModel\Model\Value;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'luft:fetch',
-    description: 'Add a short description for your command',
+    description: 'Fetch current uv values and push to luft api',
 )]
 class FetchCommand extends AbstractCommand
 {

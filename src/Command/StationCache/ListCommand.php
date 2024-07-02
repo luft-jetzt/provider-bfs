@@ -12,7 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'luft:station:list-cache',
-    description: 'Add a short description for your command',
+    description: 'Shows a list of cached stations',
 )]
 class ListCommand extends AbstractCommand
 {

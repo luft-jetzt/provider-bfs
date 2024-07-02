@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'luft:station:cache',
-    description: 'Add a short description for your command',
+    description: 'Parse station list from bfs page to local cache',
 )]
 class SaveCommand extends AbstractCommand
 {

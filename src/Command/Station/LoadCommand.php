@@ -12,7 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'luft:station:load',
-    description: 'Add a short description for your command',
+    description: 'Push chacged stations to luft api',
 )]
 class LoadCommand extends AbstractCommand
 {
