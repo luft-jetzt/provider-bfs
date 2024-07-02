@@ -49,7 +49,9 @@ class FetchCommand extends AbstractCommand
 
         $valueList = [];
 
-        $io->progressStart(count($stationList));
+        if ($output->isVerbose()) {
+            $io->progressStart(count($stationList));
+        }
 
         /** @var StationModel $station */
         foreach ($stationList as $station) {
@@ -59,12 +61,14 @@ class FetchCommand extends AbstractCommand
                 $valueList[$station->getStationCode()] = $value;
             }
 
-            $io->progressAdvance();
+            if ($output->isVerbose()) {
+                $io->progressAdvance();
+            }
         }
 
-        $io->progressFinish();
-
         if ($output->isVerbose()) {
+            $io->progressFinish();
+
             $io->table(['Station Code', 'Station Title', 'Date Time', 'UV Index'], array_map(function(Value $value) use ($stationList): array
             {
                 $stationTitle = $stationList[$value->getStationCode()]->getTitle();
