@@ -3,10 +3,12 @@
 namespace App\Bfs\Graph;
 
 use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
 use Imagine\Image\ImageInterface;
 
 class CurrentDateTime
 {
+    private const TIMEZONE_IDENTIFIER = 'Europe/Berlin';
     private const int GRAPH_WIDTH = 495;
     private const int GRAPH_MARGIN_LEFT = 81;
 
@@ -31,6 +33,8 @@ class CurrentDateTime
         $hours = floor($timeInHours);
         $minutes = ($timeInHours - $hours) * 60;
 
-        return Carbon::create(null, null, null, (int) floor($timeInHours), (int) floor($minutes), 0);
+        $timezone = new CarbonTimeZone(self::TIMEZONE_IDENTIFIER);
+
+        return Carbon::create(null, null, null, (int) floor($timeInHours), (int) floor($minutes), 0, $timezone);
     }
 }
