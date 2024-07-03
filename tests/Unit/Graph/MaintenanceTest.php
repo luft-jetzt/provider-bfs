@@ -22,6 +22,7 @@ class MaintenanceTest extends TestCase
     {
         return [
             [__DIR__ . '/../../graph/sanktaugustin.png', true],
+            [__DIR__ . '/../../graph/hamburg3.png', true],
             [__DIR__ . '/../../graph/lueneburg1.png', false],
             [__DIR__ . '/../../graph/schneefernhaus2.png', false],
         ];
