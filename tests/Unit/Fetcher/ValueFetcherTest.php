@@ -21,16 +21,14 @@ class ValueFetcherTest extends TestCase
             ->setPollutant('UV')
             ->setStationCode('TEST123')
             ->setValue($expectedUvIndex)
-            ->setDateTime($expectedDateTime)
-        ;
+            ->setDateTime($expectedDateTime);
 
         $valueFetcher = new ValueFetcher();
 
         $stationModel = new StationModel();
         $stationModel
             ->setCurrentImageUrl($currentImageUrl)
-            ->setStationCode('TEST123')
-        ;
+            ->setStationCode('TEST123');
 
         $value = $valueFetcher->fromStation($stationModel);
 
@@ -109,16 +107,24 @@ class ValueFetcherTest extends TestCase
         ];
     }
 
-    public function testMaintenance(): void
+    #[DataProvider('maintenanceFilenameProvider')]
+    public function testMaintenance(string $currentImageUrl): void
     {
         $stationModel = new StationModel();
         $stationModel
-            ->setCurrentImageUrl(__DIR__ . '/../../graph/sanktaugustin.png')
-            ->setStationCode('TEST123')
-        ;
+            ->setCurrentImageUrl($currentImageUrl)
+            ->setStationCode('TEST123');
 
         $valueFetcher = new ValueFetcher();
 
         $this->assertNull($valueFetcher->fromStation($stationModel));
+    }
+
+    public static function maintenanceFilenameProvider(): array
+    {
+        return [
+            [__DIR__ . '/../../graph/sanktaugustin.png'],
+            [__DIR__ . '/../../graph/hamburg3.png'],
+        ];
     }
 }
