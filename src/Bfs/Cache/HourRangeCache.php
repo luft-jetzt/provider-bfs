@@ -31,6 +31,15 @@ class HourRangeCache extends AbstractCache implements HourRangeCacheInterface
         $this->cache->save($cacheItem);
     }
 
+    public function remove(string $stationCode): void
+    {
+        try {
+            $this->cache->deleteItem($this->key($stationCode));
+        } catch (\Exception $exception) {
+
+        }
+    }
+
     private function key(string $stationCode): string
     {
         return sprintf('%s_%s', self::CACHE_KEY_PREFIX, strtolower($stationCode));
