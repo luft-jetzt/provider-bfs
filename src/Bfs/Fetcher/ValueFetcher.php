@@ -15,7 +15,12 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class ValueFetcher implements ValueFetcherInterface
 {
-    public function __construct(private readonly HourRange $hourRange)
+    private const string POLLUTANT_IDENTIFIER = 'UVIndex';
+
+    public function __construct(
+        private readonly HourRange $hourRange,
+        private readonly CurrentDateTime $currentDateTime,
+    )
     {
 
     }
@@ -27,12 +32,12 @@ class ValueFetcher implements ValueFetcherInterface
         $imagine = new Imagine();
         $image = $imagine->load($binaryImagecontent);
 
-        $dateTime = CurrentDateTime::calculate($image);
+        $dateTime = $this->currentDateTime->calculate($image, $stationModel->getStationCode());
 
         $value = new Value();
         $value
             ->setStationCode($stationModel->getStationCode())
-            ->setPollutant('UVIndex')
+            ->setPollutant(self::POLLUTANT_IDENTIFIER)
             ->setDateTime($dateTime)
             ->setValue(0)
         ;

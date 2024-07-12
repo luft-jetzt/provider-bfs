@@ -2,7 +2,6 @@
 
 namespace App\Bfs\Graph\HourRange;
 
-use App\Bfs\Cache\CacheInterface;
 use App\Bfs\Cache\HourRangeCacheInterface;
 use App\Bfs\Graph\Scale;
 use Imagine\Image\ImageInterface;
@@ -24,10 +23,6 @@ class HourRange
         return $this->cache->get($stationCode);
     }
 
-    protected function cacheHourRange(HourRangeModel $hourRangeModel)
-    {
-
-    }
     public function calculateAndCache(ImageInterface $image, string $stationCode): HourRangeModel
     {
         $xScaleWidth = Scale::sizeX($image);

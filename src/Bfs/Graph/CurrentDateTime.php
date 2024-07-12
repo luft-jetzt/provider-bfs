@@ -13,14 +13,18 @@ class CurrentDateTime
     private const int GRAPH_WIDTH = 495;
     private const int GRAPH_MARGIN_LEFT = 81;
 
-    private function __construct()
+    public function __construct(private readonly HourRange $hourRange)
     {
 
     }
 
-    public static function calculate(ImageInterface $image): Carbon
+    public function calculate(ImageInterface $image, string $stationCode): Carbon
     {
-        $hourRange = HourRange::calculate($image);
+        $hourRange = $this->hourRange->getCachedHourRange($stationCode);
+
+        if (!$hourRange) {
+            $hourRange = $this->hourRange->calculateAndCache($image, $stationCode);
+        }
 
         $currentPoint = Point::detectCurrentPoint($image);
         $currentX = $currentPoint->getX() - self::GRAPH_MARGIN_LEFT;
