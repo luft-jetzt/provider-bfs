@@ -2,7 +2,9 @@
 
 namespace App\Tests\Unit\Graph;
 
+use App\Bfs\Cache\HourRangeCacheInterface;
 use App\Bfs\Graph\CurrentDateTime;
+use App\Bfs\Graph\HourRange\HourRange;
 use Imagine\Gd\Imagine;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +17,16 @@ class CurrentDateTimeTest extends TestCase
         $imagine = new Imagine();
         $image = $imagine->open($graphFilename);
 
-        $currentDateTime = CurrentDateTime::calculate($image);
+        $hourRangeCacheMock = $this->createMock(HourRangeCacheInterface::class);
+        $hourRangeCacheMock
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('TEST123'))
+            ->willReturn(null)
+        ;
+
+        $hourRange = new HourRange($hourRangeCacheMock);
+        $currentDateTime = (new CurrentDateTime($hourRange))->calculate($image, 'TEST123');
 
         $this->assertEquals($DateTime, $currentDateTime);
     }

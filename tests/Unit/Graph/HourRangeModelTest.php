@@ -9,14 +9,14 @@ class HourRangeModelTest extends TestCase
 {
     public function testStartHour()
     {
-        $hourRangeModel = new HourRangeModel(6, 21);
+        $hourRangeModel = new HourRangeModel('TEST123', 6, 21);
 
         $this->assertEquals(6, $hourRangeModel->getStartHour());
     }
 
     public function testEndHour()
     {
-        $hourRangeModel = new HourRangeModel(6, 21);
+        $hourRangeModel = new HourRangeModel('TEST123', 6, 21);
 
         $this->assertEquals(21, $hourRangeModel->getEndHour());
     }
