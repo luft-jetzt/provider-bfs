@@ -3,9 +3,19 @@
 namespace App\Bfs\Cache;
 
 use App\Bfs\Graph\HourRange\HourRangeModel;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class HourRangeCache extends AbstractCache implements HourRangeCacheInterface
 {
+    public function __construct()
+    {
+        $this->cache = new FilesystemAdapter(
+            self::CACHE_NAMESPACE,
+            self::CACHE_TTL,
+            self::CACHE_DIRECTORY
+        );
+    }
+
     public function get(string $stationCode): ?HourRangeModel
     {
         $cacheItem = $this->cache->getItem($this->key($stationCode));

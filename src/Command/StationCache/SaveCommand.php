@@ -2,6 +2,8 @@
 
 namespace App\Command\StationCache;
 
+use App\Bfs\Cache\HourRangeCacheInterface;
+use App\Bfs\Cache\StationCacheInterface;
 use App\Bfs\Station\Namer;
 use App\Bfs\Website\StationLinkExtractorInterface;
 use App\Bfs\Website\StationPageParserInterface;
@@ -23,9 +25,11 @@ class SaveCommand extends AbstractCommand
     public function __construct(
         private readonly StationLinkExtractorInterface $linkExtractor,
         private readonly StationPageParserInterface $pageParser,
+        StationCacheInterface $stationCache,
+        HourRangeCacheInterface $hourRangeCache
     )
     {
-        parent::__construct();
+        parent::__construct($stationCache, $hourRangeCache);
     }
 
     protected function configure(): void
@@ -62,7 +66,7 @@ class SaveCommand extends AbstractCommand
 
         $io->progressFinish();
 
-        $this->cacheStationList($stationList);
+        $this->stationCache->saveList($stationList);
 
         $io->info(sprintf('Saved %d to cache', count($stationList)));
 

@@ -2,8 +2,10 @@
 
 namespace App\Command\Luft;
 
+use App\Bfs\Cache\HourRangeCacheInterface;
+use App\Bfs\Cache\StationCacheInterface;
 use App\Bfs\Fetcher\ValueFetcherInterface;
-use App\Bfs\Graph\HourRange\StationModel;
+use App\Bfs\Station\StationModel;
 use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\ValueApi;
 use Caldera\LuftModel\Model\Value;
@@ -20,9 +22,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class FetchCommand extends AbstractCommand
 {
-    public function __construct(private readonly ValueFetcherInterface $valueFetcher, private readonly ValueApi $valueApi)
+    public function __construct(
+        private readonly ValueFetcherInterface $valueFetcher,
+        private readonly ValueApi $valueApi,
+        StationCacheInterface $stationCache,
+        HourRangeCacheInterface $hourRangeCache,
+    )
     {
-        parent::__construct();
+        parent::__construct($stationCache, $hourRangeCache);
     }
 
     protected function configure(): void
@@ -34,7 +41,7 @@ class FetchCommand extends AbstractCommand
     {
         $io = new SymfonyStyle($input, $output);
 
-        $stationList = $this->getStationList();
+        $stationList = $this->stationCache->getList();
 
         if (!$stationList) {
             $io->error('No station list found in cache. Please load cache before fetching values.');

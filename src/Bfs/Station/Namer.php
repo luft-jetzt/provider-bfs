@@ -2,8 +2,6 @@
 
 namespace App\Bfs\Station;
 
-use App\Bfs\Graph\HourRange\StationModel;
-
 class Namer
 {
     private const OPERATOR_MAPPING = [

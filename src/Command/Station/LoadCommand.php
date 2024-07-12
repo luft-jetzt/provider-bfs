@@ -2,6 +2,8 @@
 
 namespace App\Command\Station;
 
+use App\Bfs\Cache\HourRangeCacheInterface;
+use App\Bfs\Cache\StationCacheInterface;
 use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\StationApiInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -16,16 +18,26 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class LoadCommand extends AbstractCommand
 {
-    public function __construct(private readonly StationApiInterface $stationApi)
+    public function __construct(
+        private readonly StationApiInterface $stationApi,
+        StationCacheInterface $stationCache,
+        HourRangeCacheInterface $hourRangeCache,
+    )
     {
-        parent::__construct();
+        parent::__construct($stationCache, $hourRangeCache);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $stationList = $this->getStationList();
+        $stationList = $this->stationCache->getList();
+
+        if (null === $stationList) {
+            $io->error('There are no stations in cache.');
+
+            return Command::FAILURE;
+        }
 
         $io->info(sprintf('There are %d stations saved in cache', count($stationList)));
 

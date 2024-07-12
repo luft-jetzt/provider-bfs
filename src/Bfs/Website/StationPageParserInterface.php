@@ -2,7 +2,7 @@
 
 namespace App\Bfs\Website;
 
-use App\Bfs\Graph\HourRange\StationModel;
+use App\Bfs\Station\StationModel;
 
 interface StationPageParserInterface
 {

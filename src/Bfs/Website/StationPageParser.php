@@ -3,7 +3,7 @@
 namespace App\Bfs\Website;
 
 use App\Bfs\Coordinate\Converter;
-use App\Bfs\Graph\HourRange\StationModel;
+use App\Bfs\Station\StationModel;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
 

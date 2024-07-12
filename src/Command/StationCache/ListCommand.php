@@ -2,7 +2,7 @@
 
 namespace App\Command\StationCache;
 
-use App\Bfs\Graph\HourRange\StationModel;
+use App\Bfs\Station\StationModel;
 use App\Command\AbstractCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -20,7 +20,7 @@ class ListCommand extends AbstractCommand
     {
         $io = new SymfonyStyle($input, $output);
 
-        $stationList = $this->getStationList();
+        $stationList = $this->stationCache->getList();
 
         $io->info(sprintf('There are %d stations saved in cache', count($stationList)));
 
