@@ -3,11 +3,11 @@
 namespace App\Bfs\Fetcher;
 
 use App\Bfs\Graph\CurrentDateTime;
-use App\Bfs\Graph\HourRange;
+use App\Bfs\Graph\HourRange\HourRange;
 use App\Bfs\Graph\Maintenance;
 use App\Bfs\Graph\Point;
 use App\Bfs\Graph\StepSize;
-use App\Bfs\Website\StationModel;
+use App\Bfs\Graph\HourRange\StationModel;
 use Caldera\LuftModel\Model\Value;
 use Carbon\Carbon;
 use Imagine\Gd\Imagine;

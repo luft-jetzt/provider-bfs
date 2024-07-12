@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Graph;
 
-use App\Bfs\Graph\HourRangeModel;
+use App\Bfs\Graph\HourRange\HourRangeModel;
 use PHPUnit\Framework\TestCase;
 
 class HourRangeModelTest extends TestCase

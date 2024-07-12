@@ -2,8 +2,7 @@
 
 namespace App\Bfs\Station;
 
-use App\Bfs\Coordinate\Coord;
-use App\Bfs\Website\StationModel;
+use App\Bfs\Graph\HourRange\StationModel;
 
 class Namer
 {

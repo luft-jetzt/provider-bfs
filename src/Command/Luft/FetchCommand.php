@@ -3,7 +3,7 @@
 namespace App\Command\Luft;
 
 use App\Bfs\Fetcher\ValueFetcherInterface;
-use App\Bfs\Website\StationModel;
+use App\Bfs\Graph\HourRange\StationModel;
 use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\ValueApi;
 use Caldera\LuftModel\Model\Value;

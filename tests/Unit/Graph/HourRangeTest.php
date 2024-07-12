@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Graph;
 
-use App\Bfs\Graph\HourRange;
+use App\Bfs\Graph\HourRange\HourRange;
 use Imagine\Gd\Imagine;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

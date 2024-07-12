@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Bfs\Website;
+namespace App\Bfs\Model;
 
 use Caldera\LuftModel\Model\Station as CalderaLuftStationModel;
 
