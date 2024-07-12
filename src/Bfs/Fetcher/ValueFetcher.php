@@ -7,7 +7,7 @@ use App\Bfs\Graph\HourRange\HourRange;
 use App\Bfs\Graph\Maintenance;
 use App\Bfs\Graph\Point;
 use App\Bfs\Graph\StepSize;
-use App\Bfs\Graph\HourRange\StationModel;
+use App\Bfs\Station\StationModel;
 use Caldera\LuftModel\Model\Value;
 use Carbon\Carbon;
 use Imagine\Gd\Imagine;
@@ -15,6 +15,11 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class ValueFetcher implements ValueFetcherInterface
 {
+    public function __construct(private readonly HourRange $hourRange)
+    {
+
+    }
+
     public function fromStation(StationModel $stationModel): ?Value
     {
         $binaryImagecontent = $this->loadImageContent($stationModel->getCurrentImageUrl());
@@ -36,7 +41,7 @@ class ValueFetcher implements ValueFetcherInterface
             return null;
         }
 
-        $hourRange = HourRange::calculate($image);
+        $hourRange = $this->hourRange->calculateAndCache($image, $stationModel->getStationCode());
 
         $now = new Carbon();
 

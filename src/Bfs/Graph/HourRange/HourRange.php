@@ -6,7 +6,6 @@ use App\Bfs\Cache\CacheInterface;
 use App\Bfs\Cache\HourRangeCacheInterface;
 use App\Bfs\Graph\Scale;
 use Imagine\Image\ImageInterface;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class HourRange
 {
@@ -15,21 +14,14 @@ class HourRange
         16 => [6, 21],
     ];
 
-    private FilesystemAdapter $cache;
-
-    public function __construct()
+    public function __construct(private readonly HourRangeCacheInterface $cache)
     {
-        $this->cache = new FilesystemAdapter(
-            HourRangeCacheInterface::CACHE_NAMESPACE,
-            HourRangeCacheInterface::CACHE_TTL,
-            HourRangeCacheInterface::CACHE_DIRECTORY
-        );
+
     }
 
     public function getCachedHourRange(string $stationCode): ?HourRangeModel
     {
-        $item = $this->cache->getItem(CacheInterface::CACHE_KEY);
-        return $item->get();
+        return $this->cache->get($stationCode);
     }
 
     protected function cacheHourRange(HourRangeModel $hourRangeModel)
@@ -42,13 +34,12 @@ class HourRange
 
         if (array_key_exists($xScaleWidth, self::RANGE_MAPPING)) {
             $hourRange = new HourRangeModel(
+                $stationCode,
                 self::RANGE_MAPPING[$xScaleWidth][0],
                 self::RANGE_MAPPING[$xScaleWidth][1]
             );
 
-            $cacheItem = $this->cache->getItem(CacheInterface::CACHE_KEY);
-            $cacheItem->set($hourRange);
-            $this->cache->save($cacheItem);
+            $this->cache->save($stationCode, $hourRange);
 
             return $hourRange;
         }

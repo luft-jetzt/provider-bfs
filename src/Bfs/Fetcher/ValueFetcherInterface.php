@@ -2,7 +2,7 @@
 
 namespace App\Bfs\Fetcher;
 
-use App\Bfs\Graph\HourRange\StationModel;
+use App\Bfs\Station\StationModel;
 use Caldera\LuftModel\Model\Value;
 
 interface ValueFetcherInterface
