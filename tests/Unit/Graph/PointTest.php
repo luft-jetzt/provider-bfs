@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\Graph;
 
+use App\Bfs\Exception\NoPointException;
 use App\Bfs\Graph\Point;
 use Imagine\Gd\Imagine;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -29,5 +30,15 @@ class PointTest extends TestCase
             [__DIR__ . '/../../graph/lueneburg2.png', 350, 234],
             [__DIR__ . '/../../graph/lueneburg3.png', 383, 261],
         ];
+    }
+
+    public function testInvalidGraph(): void
+    {
+        $this->expectException(NoPointException::class);
+
+        $imagine = new Imagine();
+        $image = $imagine->open(__DIR__ . '/../../graph/melpitz.png');
+
+        Point::detectCurrentPoint($image);
     }
 }

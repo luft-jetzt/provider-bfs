@@ -39,6 +39,25 @@ class CurrentDateTimeTest extends TestCase
         ];
     }
 
+    public function testEmptyDataDateTimeFailure(): void
+    {
+        $imagine = new Imagine();
+        $image = $imagine->open(__DIR__ . '/../../graph/melpitz.png');
+
+        $hourRangeCacheMock = $this->createMock(HourRangeCacheInterface::class);
+        $hourRangeCacheMock
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('TEST123'))
+            ->willReturn(null)
+        ;
+
+        $hourRange = new HourRange($hourRangeCacheMock);
+        $currentDateTime = (new CurrentDateTime($hourRange))->calculate($image, 'TEST123');
+
+        $this->assertNull($currentDateTime);
+    }
+
     protected static function createDateTime(): \DateTime
     {
         return (new \DateTime())->setTimezone(new \DateTimeZone('Europe/Berlin'));
