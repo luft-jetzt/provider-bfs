@@ -2,6 +2,8 @@
 
 namespace App\Bfs\Graph;
 
+use App\Bfs\Exception\NoPointException;
+use App\Bfs\Graph\HourRange\HourRange;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 use Imagine\Image\ImageInterface;
@@ -17,11 +19,16 @@ class CurrentDateTime
 
     }
 
-    public static function calculate(ImageInterface $image): Carbon
+    public static function calculate(ImageInterface $image): ?Carbon
     {
         $hourRange = HourRange::calculate($image);
 
-        $currentPoint = Point::detectCurrentPoint($image);
+        try {
+            $currentPoint = Point::detectCurrentPoint($image);
+        } catch (NoPointException $exception) {
+            return null;
+        }
+
         $currentX = $currentPoint->getX() - self::GRAPH_MARGIN_LEFT;
 
         $totalHours = $hourRange->getEndHour() - $hourRange->getStartHour();
