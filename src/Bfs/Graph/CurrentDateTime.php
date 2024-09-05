@@ -3,7 +3,6 @@
 namespace App\Bfs\Graph;
 
 use App\Bfs\Exception\NoPointException;
-use App\Bfs\Graph\HourRange\HourRange;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 use Imagine\Image\ImageInterface;
