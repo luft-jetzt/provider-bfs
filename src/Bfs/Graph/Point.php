@@ -2,6 +2,8 @@
 
 namespace App\Bfs\Graph;
 
+use App\Bfs\Exception\NoPointException;
+use Imagine\Exception\InvalidArgumentException;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Point as ImaginePoint;
 
@@ -19,7 +21,12 @@ class Point
         $height = $size->getHeight();
 
         for ($x = 575; $x >= 0; --$x) {
-            $point = new ImaginePoint($x,  $height - 49);
+            try {
+                $point = new ImaginePoint($x,  $height - 49);
+            } catch (InvalidArgumentException $invalidArgumentException) {
+                throw new NoPointException('Could not find current point in image.');
+            }
+
             $color = $image->getColorAt($point);
 
             if ($color->getRed() !== $color->getGreen() || $color->getRed() !== $color->getBlue() || $color->getGreen() !== $color->getBlue()) {
@@ -28,7 +35,12 @@ class Point
         }
 
         for ($y = $height - 49; $y > 0; --$y) {
-            $point = new ImaginePoint($x, $y);
+            try {
+                $point = new ImaginePoint($x, $y);
+            } catch (InvalidArgumentException $invalidArgumentException) {
+                throw new NoPointException('Could not find current point in image.');
+            }
+
             $color = $image->getColorAt($point);
 
             if ($color->getRed() == $color->getGreen() && $color->getRed() == $color->getBlue()) {
@@ -38,6 +50,12 @@ class Point
             }
         }
 
-        return new ImaginePoint($x, $y);
+        try {
+            $point =  new ImaginePoint($x, $y);
+        } catch (InvalidArgumentException $invalidArgumentException) {
+            throw new NoPointException('Could not find current point in image.');
+        }
+
+        return $point;
     }
 }
