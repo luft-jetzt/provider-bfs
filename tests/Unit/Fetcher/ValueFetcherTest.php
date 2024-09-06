@@ -52,7 +52,7 @@ class ValueFetcherTest extends TestCase
             ],
             [
                 __DIR__ . '/../../graph/friedrichshafen2.png',
-                0,
+                0.6,
                 self::createCarbon(20, 58),
                 self::createCarbon(21, 5),
             ],
