@@ -18,7 +18,7 @@ class ValueFetcherTest extends TestCase
 
         $expectedValue = new Value();
         $expectedValue
-            ->setPollutant('UV')
+            ->setPollutant('UVIndex')
             ->setStationCode('TEST123')
             ->setValue($expectedUvIndex)
             ->setDateTime($expectedDateTime);
