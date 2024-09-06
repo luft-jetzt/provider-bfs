@@ -39,6 +39,16 @@ class CurrentDateTimeTest extends TestCase
         ];
     }
 
+    public function testEmptyDataDateTimeFailure(): void
+    {
+        $imagine = new Imagine();
+        $image = $imagine->open(__DIR__ . '/../../graph/melpitz.png');
+
+        $currentDateTime = CurrentDateTime::calculate($image);
+
+        $this->assertNull($currentDateTime);
+    }
+
     protected static function createDateTime(): \DateTime
     {
         return (new \DateTime())->setTimezone(new \DateTimeZone('Europe/Berlin'));

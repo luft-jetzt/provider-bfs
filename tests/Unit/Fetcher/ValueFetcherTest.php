@@ -128,6 +128,26 @@ class ValueFetcherTest extends TestCase
         ];
     }
 
+    #[DataProvider('emptyFilenameProvider')]
+    public function testEmpty(string $currentImageUrl): void
+    {
+        $stationModel = new StationModel();
+        $stationModel
+            ->setCurrentImageUrl($currentImageUrl)
+            ->setStationCode('TEST123');
+
+        $valueFetcher = new ValueFetcher();
+
+        $this->assertNull($valueFetcher->fromStation($stationModel));
+    }
+
+    public static function emptyFilenameProvider(): array
+    {
+        return [
+            [__DIR__ . '/../../graph/melpitz.png'],
+        ];
+    }
+
     private static function createCarbon(int $hour, int $minute): Carbon
     {
         $carbon = new Carbon();

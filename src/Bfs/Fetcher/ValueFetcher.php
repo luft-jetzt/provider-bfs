@@ -24,6 +24,10 @@ class ValueFetcher implements ValueFetcherInterface
 
         $dateTime = CurrentDateTime::calculate($image);
 
+        if (!$dateTime) {
+            return null;
+        }
+
         $value = new Value();
         $value
             ->setStationCode($stationModel->getStationCode())
