@@ -53,7 +53,13 @@ class FetchCommand extends AbstractCommand
 
         /** @var StationModel $station */
         foreach ($stationList as $station) {
-            $value = $this->valueFetcher->fromStation($station);
+
+            try {
+                $value = $this->valueFetcher->fromStation($station);
+            } catch (\Exception $exception) {
+                $io->error(sprintf('Error fetching value for station %s (%s): %s', $station->getTitle(), $station->getStationCode(), $exception->getMessage()));
+                continue;
+            }
 
             if ($value instanceof Value) {
                 $valueList[$station->getStationCode()] = $value;
