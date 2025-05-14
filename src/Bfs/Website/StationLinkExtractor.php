@@ -20,7 +20,7 @@ class StationLinkExtractor implements StationLinkExtractorInterface
 
         $links = $crawler->filter('#main #content ul li a')->each(function (Crawler $node): PageLinkModel
         {
-            $url = sprintf('%s%s', self::HOSTNAME, $this->removeSessionId($node->attr('href')));
+            $url = $this->removeSessionId($node->attr('href'));
             $caption = $node->text();
 
             return new PageLinkModel($url, $caption);
