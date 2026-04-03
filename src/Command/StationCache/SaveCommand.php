@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Command\StationCache;
 
@@ -23,8 +25,7 @@ class SaveCommand extends AbstractCommand
     public function __construct(
         private readonly StationLinkExtractorInterface $linkExtractor,
         private readonly StationPageParserInterface $pageParser,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

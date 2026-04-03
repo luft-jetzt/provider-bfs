@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Tests\Unit\Graph;
 
@@ -21,10 +23,10 @@ class MaintenanceTest extends TestCase
     public static function graphFilenameProvider(): array
     {
         return [
-            [__DIR__ . '/../../graph/sanktaugustin.png', true],
-            [__DIR__ . '/../../graph/hamburg3.png', true],
-            [__DIR__ . '/../../graph/lueneburg1.png', false],
-            [__DIR__ . '/../../graph/schneefernhaus2.png', false],
+            [__DIR__.'/../../graph/sanktaugustin.png', true],
+            [__DIR__.'/../../graph/hamburg3.png', true],
+            [__DIR__.'/../../graph/lueneburg1.png', false],
+            [__DIR__.'/../../graph/schneefernhaus2.png', false],
         ];
     }
 }

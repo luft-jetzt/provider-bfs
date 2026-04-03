@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Bfs\Station;
 
@@ -9,11 +11,10 @@ class Loader implements LoaderInterface
 {
     public function __construct(
         private readonly StationLinkExtractorInterface $linkExtractor,
-        private readonly StationPageParserInterface $pageParser
-    )
-    {
-
+        private readonly StationPageParserInterface $pageParser,
+    ) {
     }
+
     public function load(): array
     {
         $stationLinks = $this->linkExtractor->parseStationLinks();

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Command\Luft;
 
@@ -38,6 +40,7 @@ class FetchCommand extends AbstractCommand
 
         if (!$stationList) {
             $io->error('No station list found in cache. Please load cache before fetching values.');
+
             return Command::FAILURE;
         }
 
@@ -53,7 +56,6 @@ class FetchCommand extends AbstractCommand
 
         /** @var StationModel $station */
         foreach ($stationList as $station) {
-
             try {
                 $value = $this->valueFetcher->fromStation($station);
             } catch (\Exception $exception) {
@@ -73,14 +75,14 @@ class FetchCommand extends AbstractCommand
         if ($output->isVerbose()) {
             $io->progressFinish();
 
-            $io->table(['Station Code', 'Station Title', 'Date Time', 'UV Index'], array_map(function(Value $value) use ($stationList): array
-            {
+            $io->table(['Station Code', 'Station Title', 'Date Time', 'UV Index'], array_map(function (Value $value) use ($stationList): array {
                 $stationTitle = $stationList[$value->getStationCode()]->getTitle();
+
                 return [
                     $value->getStationCode(),
                     $stationTitle,
                     $value->getDateTime()->format('Y-m-d H:i:s'),
-                    $value->getValue()
+                    $value->getValue(),
                 ];
             }, $valueList));
         }

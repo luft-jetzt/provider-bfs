@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Bfs\Website;
 
@@ -10,7 +12,6 @@ class StationPageParser implements StationPageParserInterface
 {
     public function __construct()
     {
-
     }
 
     public function parse(string $url): StationModel

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Bfs\Graph;
 
@@ -11,7 +13,6 @@ class Point
 {
     private function __construct()
     {
-
     }
 
     public static function detectCurrentPoint(ImageInterface $image): ImaginePoint
@@ -22,7 +23,7 @@ class Point
 
         for ($x = 575; $x >= 0; --$x) {
             try {
-                $point = new ImaginePoint($x,  $height - 49);
+                $point = new ImaginePoint($x, $height - 49);
             } catch (InvalidArgumentException $invalidArgumentException) {
                 throw new NoPointException('Could not find current point in image.');
             }
@@ -51,7 +52,7 @@ class Point
         }
 
         try {
-            $point =  new ImaginePoint($x, $y);
+            $point = new ImaginePoint($x, $y);
         } catch (InvalidArgumentException $invalidArgumentException) {
             throw new NoPointException('Could not find current point in image.');
         }

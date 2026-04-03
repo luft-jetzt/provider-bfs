@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Tests\Unit\Graph;
 
@@ -25,10 +27,10 @@ class PointTest extends TestCase
     public static function graphFilenameProvider(): array
     {
         return [
-            [__DIR__ . '/../../graph/hamburg1.png', 472, 329],
-            [__DIR__ . '/../../graph/lueneburg1.png', 483, 426],
-            [__DIR__ . '/../../graph/lueneburg2.png', 350, 234],
-            [__DIR__ . '/../../graph/lueneburg3.png', 383, 261],
+            [__DIR__.'/../../graph/hamburg1.png', 472, 329],
+            [__DIR__.'/../../graph/lueneburg1.png', 483, 426],
+            [__DIR__.'/../../graph/lueneburg2.png', 350, 234],
+            [__DIR__.'/../../graph/lueneburg3.png', 383, 261],
         ];
     }
 
@@ -37,7 +39,7 @@ class PointTest extends TestCase
         $this->expectException(NoPointException::class);
 
         $imagine = new Imagine();
-        $image = $imagine->open(__DIR__ . '/../../graph/melpitz.png');
+        $image = $imagine->open(__DIR__.'/../../graph/melpitz.png');
 
         Point::detectCurrentPoint($image);
     }

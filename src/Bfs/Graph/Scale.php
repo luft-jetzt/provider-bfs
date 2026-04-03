@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Bfs\Graph;
 
@@ -18,7 +20,6 @@ class Scale
 
     private function __construct()
     {
-
     }
 
     public static function sizeY(ImageInterface $image): int
@@ -32,7 +33,7 @@ class Scale
             $point = new Point(self::Y_PADDING_LEFT, $y);
             $color = $image->getColorAt($point);
 
-            if ($color->getRed() === self::Y_THRESHOLD && $color->getGreen() === self::Y_THRESHOLD && $color->getRed() === self::Y_THRESHOLD) {
+            if (self::Y_THRESHOLD === $color->getRed() && self::Y_THRESHOLD === $color->getGreen() && self::Y_THRESHOLD === $color->getRed()) {
                 ++$counter;
 
                 $y -= 5; // jump five pixels to avoid detecting some grey artifacts as scale again
@@ -53,7 +54,7 @@ class Scale
             $point = new Point($x, self::X_PADDING_TOP);
             $color = $image->getColorAt($point);
 
-            if ($color->getRed() === self::X_THRESHOLD && $color->getGreen() === self::X_THRESHOLD && $color->getRed() === self::X_THRESHOLD) {
+            if (self::X_THRESHOLD === $color->getRed() && self::X_THRESHOLD === $color->getGreen() && self::X_THRESHOLD === $color->getRed()) {
                 ++$counter;
 
                 $x -= 5; // jump five pixels to avoid detecting some grey artifacts as scale again

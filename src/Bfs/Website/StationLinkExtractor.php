@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Bfs\Website;
 
@@ -45,10 +47,10 @@ class StationLinkExtractor implements StationLinkExtractorInterface
             return $url;
         }
 
-        if ($url !== '' && $url[0] !== '/') {
-            $url = '/' . $url;
+        if ('' !== $url && '/' !== $url[0]) {
+            $url = '/'.$url;
         }
 
-        return self::HOSTNAME . $url;
+        return self::HOSTNAME.$url;
     }
 }
