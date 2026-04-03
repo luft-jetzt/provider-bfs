@@ -21,14 +21,21 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: ctype, iconv
-          coverage: none
+          extensions: ctype, iconv, gd
+          coverage: pcov
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Run tests
-        run: vendor/bin/phpunit
+      - name: Run tests with coverage
+        run: vendor/bin/phpunit --coverage-clover coverage.xml --coverage-text
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
 
   phpstan:
     name: PHPStan
@@ -69,3 +76,22 @@ jobs:
 
       - name: Check code style
         run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  composer-audit:
+    name: Composer Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Check for security vulnerabilities
+        run: composer audit
