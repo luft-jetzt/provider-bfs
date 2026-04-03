@@ -13,6 +13,7 @@ class StationLinkExtractor implements StationLinkExtractorInterface
     {
     }
 
+    /** @return array<int, PageLinkModel> */
     public function parseStationLinks(): array
     {
         $htmlContent = $this->loadPageContent();

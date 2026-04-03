@@ -23,16 +23,14 @@ class StationPageParser implements StationPageParserInterface
 
         $coord = Converter::convert($coordinateString);
 
-        $station
-            ->setBfsPageUrl($url)
-            ->setCurrentImageUrl($crawler->filter('#heute .picture.linksOhne img')->attr('src'))
-            ->setTitle($crawler->filter('.singleview h1')->text())
-            ->setOperator($crawler->filter('table tbody tr:nth-child(1) td:nth-child(2)')->text())
-            ->setLocation($crawler->filter('table tbody tr:nth-child(2) td:nth-child(2)')->text())
-            ->setAltitude((int) $crawler->filter('table tbody tr:nth-child(3) td:nth-child(2)')->text())
-            ->setLatitude($coord->getLatitude())
-            ->setLongitude($coord->getLongitude())
-        ;
+        $station->setBfsPageUrl($url);
+        $station->setCurrentImageUrl($crawler->filter('#heute .picture.linksOhne img')->attr('src'));
+        $station->setTitle($crawler->filter('.singleview h1')->text());
+        $station->setOperator($crawler->filter('table tbody tr:nth-child(1) td:nth-child(2)')->text());
+        $station->setLocation($crawler->filter('table tbody tr:nth-child(2) td:nth-child(2)')->text());
+        $station->setAltitude((int) $crawler->filter('table tbody tr:nth-child(3) td:nth-child(2)')->text());
+        $station->setLatitude($coord->getLatitude());
+        $station->setLongitude($coord->getLongitude());
 
         return $station;
     }

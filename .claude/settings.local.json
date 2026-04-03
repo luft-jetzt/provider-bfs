@@ -13,7 +13,13 @@
       "Bash(gh pr:*)",
       "Bash(composer require:*)",
       "Bash(composer install:*)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(vendor/bin/phpstan analyse:*)",
+      "Bash(vendor/bin/phpunit)",
+      "Bash(vendor/bin/phpunit --display-deprecations)",
+      "Bash(vendor/bin/php-cs-fixer fix:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)"
     ]
   }
 }
