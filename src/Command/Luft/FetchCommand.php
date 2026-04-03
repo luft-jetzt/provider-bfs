@@ -10,6 +10,7 @@ use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\ValueApi;
 use Caldera\LuftModel\Model\Value;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,11 +25,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class FetchCommand extends AbstractCommand
 {
     public function __construct(
+        AdapterInterface $stationCache,
         private readonly ValueFetcherInterface $valueFetcher,
         private readonly ValueApi $valueApi,
         private readonly LoggerInterface $logger,
     ) {
-        parent::__construct();
+        parent::__construct($stationCache);
     }
 
     protected function configure(): void

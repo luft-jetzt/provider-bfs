@@ -9,9 +9,17 @@ use App\Bfs\Website\StationModel;
 use Caldera\LuftModel\Model\Value;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ValueFetcherTest extends TestCase
 {
+    private function createValueFetcher(): ValueFetcher
+    {
+        $httpClient = $this->createStub(HttpClientInterface::class);
+
+        return new ValueFetcher($httpClient);
+    }
+
     #[DataProvider('graphFilenameProvider')]
     public function testValueFetcher(string $currentImageUrl, float $expectedUvIndex, \DateTime $expectedDateTime, \DateTime $currentDateTime): void
     {
@@ -22,7 +30,7 @@ class ValueFetcherTest extends TestCase
             ->setValue($expectedUvIndex)
             ->setDateTime($expectedDateTime);
 
-        $valueFetcher = new ValueFetcher();
+        $valueFetcher = $this->createValueFetcher();
         $valueFetcher->setNow($currentDateTime);
 
         $stationModel = new StationModel();
@@ -115,7 +123,7 @@ class ValueFetcherTest extends TestCase
             ->setCurrentImageUrl($currentImageUrl)
             ->setStationCode('TEST123');
 
-        $valueFetcher = new ValueFetcher();
+        $valueFetcher = $this->createValueFetcher();
 
         $this->assertNull($valueFetcher->fromStation($stationModel));
     }
@@ -136,7 +144,7 @@ class ValueFetcherTest extends TestCase
             ->setCurrentImageUrl($currentImageUrl)
             ->setStationCode('TEST123');
 
-        $valueFetcher = new ValueFetcher();
+        $valueFetcher = $this->createValueFetcher();
 
         $this->assertNull($valueFetcher->fromStation($stationModel));
     }

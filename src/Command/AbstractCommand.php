@@ -6,29 +6,26 @@ namespace App\Command;
 
 use App\Bfs\Cache\CacheInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Console\Command\Command;
 
 abstract class AbstractCommand extends Command
 {
-    protected function createCache(): AdapterInterface
+    public function __construct(private readonly AdapterInterface $stationCache)
     {
-        return new FilesystemAdapter(CacheInterface::CACHE_NAMESPACE, CacheInterface::CACHE_TTL, CacheInterface::CACHE_DIRECTORY);
+        parent::__construct();
     }
 
     protected function getStationList(): array
     {
-        $cache = $this->createCache();
-        $item = $cache->getItem(CacheInterface::CACHE_KEY);
+        $item = $this->stationCache->getItem(CacheInterface::CACHE_KEY);
 
         return $item->get();
     }
 
     public function cacheStationList(array $stationList): void
     {
-        $cache = $this->createCache();
-        $cacheItem = $cache->getItem(CacheInterface::CACHE_KEY);
+        $cacheItem = $this->stationCache->getItem(CacheInterface::CACHE_KEY);
         $cacheItem->set($stationList);
-        $cache->save($cacheItem);
+        $this->stationCache->save($cacheItem);
     }
 }

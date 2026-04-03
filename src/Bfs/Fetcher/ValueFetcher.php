@@ -13,11 +13,15 @@ use App\Bfs\Graph\StepSize;
 use App\Bfs\Website\StationModel;
 use Caldera\LuftModel\Model\Value;
 use Imagine\Gd\Imagine;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ValueFetcher implements ValueFetcherInterface
 {
     private ?\DateTime $now = null;
+
+    public function __construct(private readonly HttpClientInterface $httpClient)
+    {
+    }
 
     public function setNow(\DateTime $now): void
     {
@@ -71,8 +75,7 @@ class ValueFetcher implements ValueFetcherInterface
     protected function loadImageContent(string $url): string
     {
         if (str_starts_with($url, 'https://')) {
-            $httpClient = HttpClient::create();
-            $response = $httpClient->request('GET', $url);
+            $response = $this->httpClient->request('GET', $url);
 
             return $response->getContent();
         }

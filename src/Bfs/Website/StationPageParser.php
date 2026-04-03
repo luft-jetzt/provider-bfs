@@ -6,11 +6,11 @@ namespace App\Bfs\Website;
 
 use App\Bfs\Coordinate\Converter;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class StationPageParser implements StationPageParserInterface
 {
-    public function __construct()
+    public function __construct(private readonly HttpClientInterface $httpClient)
     {
     }
 
@@ -39,8 +39,7 @@ class StationPageParser implements StationPageParserInterface
 
     protected function loadPageContent(string $url): string
     {
-        $httpClient = HttpClient::create();
-        $response = $httpClient->request('GET', $url);
+        $response = $this->httpClient->request('GET', $url);
 
         return $response->getContent();
     }

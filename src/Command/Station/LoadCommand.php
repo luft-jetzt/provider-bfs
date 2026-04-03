@@ -6,6 +6,7 @@ namespace App\Command\Station;
 
 use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\StationApiInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,13 +15,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'luft:station:load',
-    description: 'Push chacged stations to luft api',
+    description: 'Push cached stations to luft api',
 )]
 class LoadCommand extends AbstractCommand
 {
-    public function __construct(private readonly StationApiInterface $stationApi)
-    {
-        parent::__construct();
+    public function __construct(
+        AdapterInterface $stationCache,
+        private readonly StationApiInterface $stationApi,
+    ) {
+        parent::__construct($stationCache);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
