@@ -27,4 +27,18 @@ class ConverterTest extends TestCase
             ["51°32' Nord<br>\n12°56' Ost", 51.5333333333, 12.9333333333],
         ];
     }
+
+    public function testInvalidInputThrowsException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Converter::convert('invalid coordinate string');
+    }
+
+    public function testEmptyInputThrowsException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Converter::convert('');
+    }
 }

@@ -55,6 +55,6 @@ class StationLinkExtractor implements StationLinkExtractorInterface
             $url = '/'.$url;
         }
 
-        return self::HOSTNAME.$url;
+        return rtrim(self::HOSTNAME, '/').'/'.ltrim($url, '/');
     }
 }
