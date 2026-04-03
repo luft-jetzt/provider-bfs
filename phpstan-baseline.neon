@@ -31,18 +31,6 @@ parameters:
 			path: src/Bfs/Graph/Scale.php
 
 		-
-			message: '#^Method App\\Bfs\\Station\\Loader\:\:load\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bfs/Station/Loader.php
-
-		-
-			message: '#^Method App\\Bfs\\Station\\LoaderInterface\:\:load\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bfs/Station/LoaderInterface.php
-
-		-
 			message: '#^Method App\\Bfs\\Website\\StationLinkExtractor\:\:parseStationLinks\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
