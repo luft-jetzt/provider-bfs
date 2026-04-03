@@ -16,6 +16,13 @@ class Loader implements LoaderInterface
     }
     public function load(): array
     {
+        $stationLinks = $this->linkExtractor->parseStationLinks();
+        $stationList = [];
 
+        foreach ($stationLinks as $stationLink) {
+            $stationList[] = $this->pageParser->parse($stationLink);
+        }
+
+        return $stationList;
     }
 }
