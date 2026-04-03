@@ -41,7 +41,7 @@ class Maintenance
                     ++$edgeCounter;
                 }
 
-                if (4 === $edgeCounter) {
+                if (GraphDimensions::MAINTENANCE_EDGE_COUNT === $edgeCounter) {
                     return true;
                 }
             }
