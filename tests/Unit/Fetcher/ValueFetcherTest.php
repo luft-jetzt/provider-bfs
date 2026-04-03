@@ -7,22 +7,14 @@ namespace App\Tests\Unit\Fetcher;
 use App\Bfs\Fetcher\ValueFetcher;
 use App\Bfs\Website\StationModel;
 use Caldera\LuftModel\Model\Value;
-use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ValueFetcherTest extends TestCase
 {
-    protected function tearDown(): void
-    {
-        Carbon::setTestNow();
-    }
-
     #[DataProvider('graphFilenameProvider')]
-    public function testValueFetcher(string $currentImageUrl, float $expectedUvIndex, Carbon $expectedDateTime, Carbon $currentDateTime): void
+    public function testValueFetcher(string $currentImageUrl, float $expectedUvIndex, \DateTime $expectedDateTime, \DateTime $currentDateTime): void
     {
-        Carbon::setTestNow($currentDateTime);
-
         $expectedValue = new Value();
         $expectedValue
             ->setPollutant('UVIndex')
@@ -31,6 +23,7 @@ class ValueFetcherTest extends TestCase
             ->setDateTime($expectedDateTime);
 
         $valueFetcher = new ValueFetcher();
+        $valueFetcher->setNow($currentDateTime);
 
         $stationModel = new StationModel();
         $stationModel
@@ -48,68 +41,68 @@ class ValueFetcherTest extends TestCase
             [
                 __DIR__.'/../../graph/boesel.png',
                 2.7,
-                self::createCarbon(9, 3),
-                self::createCarbon(9, 3),
+                self::createDateTime(9, 3),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/friedrichshafen1.png',
                 0.9,
-                self::createCarbon(10, 0),
-                self::createCarbon(9, 3),
+                self::createDateTime(10, 0),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/friedrichshafen2.png',
                 0.6,
-                self::createCarbon(20, 58),
-                self::createCarbon(21, 5),
+                self::createDateTime(20, 58),
+                self::createDateTime(20, 58),
             ],
             [
                 __DIR__.'/../../graph/hamburg1.png',
                 3,
-                self::createCarbon(17, 50),
-                self::createCarbon(9, 3),
+                self::createDateTime(17, 50),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/hamburg2.png',
                 4.2,
-                self::createCarbon(9, 54),
-                self::createCarbon(9, 3),
+                self::createDateTime(9, 54),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/lueneburg1.png',
                 0.6,
-                self::createCarbon(18, 10),
-                self::createCarbon(9, 3),
+                self::createDateTime(18, 10),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/lueneburg2.png',
                 5.3,
-                self::createCarbon(14, 9),
-                self::createCarbon(9, 3),
+                self::createDateTime(14, 9),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/lueneburg3.png',
                 4.6,
-                self::createCarbon(15, 9),
-                self::createCarbon(9, 3),
+                self::createDateTime(15, 9),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/lueneburg4.png',
                 5.4,
-                self::createCarbon(15, 0),
-                self::createCarbon(9, 3),
+                self::createDateTime(15, 0),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/schneefernhaus1.png',
                 4.4,
-                self::createCarbon(9, 50),
-                self::createCarbon(9, 3),
+                self::createDateTime(9, 50),
+                self::createDateTime(9, 3),
             ],
             [
                 __DIR__.'/../../graph/schneefernhaus2.png',
                 1.3,
-                self::createCarbon(15, 10),
-                self::createCarbon(9, 3),
+                self::createDateTime(15, 10),
+                self::createDateTime(9, 3),
             ],
         ];
     }
@@ -155,14 +148,8 @@ class ValueFetcherTest extends TestCase
         ];
     }
 
-    private static function createCarbon(int $hour, int $minute): Carbon
+    private static function createDateTime(int $hour, int $minute): \DateTime
     {
-        $carbon = new Carbon();
-        $carbon
-            ->setTimezone('Europe/Berlin')
-            ->setTime($hour, $minute)
-        ;
-
-        return $carbon;
+        return (new \DateTime('now', new \DateTimeZone('Europe/Berlin')))->setTime($hour, $minute);
     }
 }

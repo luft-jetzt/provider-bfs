@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Bfs\Graph;
 
 use App\Bfs\Exception\NoPointException;
-use Carbon\Carbon;
-use Carbon\CarbonTimeZone;
 use Imagine\Image\ImageInterface;
 
 class CurrentDateTime
@@ -19,7 +17,7 @@ class CurrentDateTime
     {
     }
 
-    public static function calculate(ImageInterface $image): ?Carbon
+    public static function calculate(ImageInterface $image): ?\DateTime
     {
         $hourRange = HourRange::calculate($image);
 
@@ -40,8 +38,8 @@ class CurrentDateTime
         $hours = floor($timeInHours);
         $minutes = ($timeInHours - $hours) * 60;
 
-        $timezone = new CarbonTimeZone(self::TIMEZONE_IDENTIFIER);
+        $timezone = new \DateTimeZone(self::TIMEZONE_IDENTIFIER);
 
-        return Carbon::create(null, null, null, (int) floor($timeInHours), (int) floor($minutes), 0, $timezone);
+        return (new \DateTime('now', $timezone))->setTime((int) floor($timeInHours), (int) floor($minutes));
     }
 }
