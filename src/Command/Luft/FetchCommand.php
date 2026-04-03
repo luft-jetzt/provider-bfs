@@ -115,6 +115,11 @@ class FetchCommand extends AbstractCommand
         return Command::SUCCESS;
     }
 
+    /**
+     * @param array<string, StationModel> $stationList
+     *
+     * @return array<string, StationModel>
+     */
     protected function processStationList(InputInterface $input, array $stationList): array
     {
         $specifiedStationCode = $input->getArgument('station-code') ?? '';

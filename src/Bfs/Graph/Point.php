@@ -7,6 +7,7 @@ namespace App\Bfs\Graph;
 use App\Bfs\Exception\NoPointException;
 use Imagine\Exception\InvalidArgumentException;
 use Imagine\Image\ImageInterface;
+use Imagine\Image\Palette\Color\RGB;
 use Imagine\Image\Point as ImaginePoint;
 
 class Point
@@ -28,6 +29,7 @@ class Point
                 throw new NoPointException('Could not find current point in image.');
             }
 
+            /** @var RGB $color */
             $color = $image->getColorAt($point);
 
             if ($color->getRed() !== $color->getGreen() || $color->getRed() !== $color->getBlue() || $color->getGreen() !== $color->getBlue()) {
@@ -42,9 +44,10 @@ class Point
                 throw new NoPointException('Could not find current point in image.');
             }
 
+            /** @var RGB $color */
             $color = $image->getColorAt($point);
 
-            if ($color->getRed() == $color->getGreen() && $color->getRed() == $color->getBlue()) {
+            if ($color->getRed() === $color->getGreen() && $color->getRed() === $color->getBlue()) {
                 ++$y;
 
                 break;

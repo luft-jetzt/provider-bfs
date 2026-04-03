@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Bfs\Graph;
 
 use Imagine\Image\ImageInterface;
+use Imagine\Image\Palette\Color\RGB;
 use Imagine\Image\Point;
 
 class Scale
@@ -31,9 +32,11 @@ class Scale
 
         for ($y = $height - self::Y_PADDING_BOTTOM; $y > self::Y_PADDING_TOP; --$y) {
             $point = new Point(self::Y_PADDING_LEFT, $y);
+
+            /** @var RGB $color */
             $color = $image->getColorAt($point);
 
-            if (self::Y_THRESHOLD === $color->getRed() && self::Y_THRESHOLD === $color->getGreen() && self::Y_THRESHOLD === $color->getRed()) {
+            if (self::Y_THRESHOLD === $color->getRed() && self::Y_THRESHOLD === $color->getGreen() && self::Y_THRESHOLD === $color->getBlue()) {
                 ++$counter;
 
                 $y -= 5; // jump five pixels to avoid detecting some grey artifacts as scale again
@@ -52,9 +55,11 @@ class Scale
 
         for ($x = $width - self::X_PADDING_RIGHT; $x > self::X_PADDING_LEFT; --$x) {
             $point = new Point($x, self::X_PADDING_TOP);
+
+            /** @var RGB $color */
             $color = $image->getColorAt($point);
 
-            if (self::X_THRESHOLD === $color->getRed() && self::X_THRESHOLD === $color->getGreen() && self::X_THRESHOLD === $color->getRed()) {
+            if (self::X_THRESHOLD === $color->getRed() && self::X_THRESHOLD === $color->getGreen() && self::X_THRESHOLD === $color->getBlue()) {
                 ++$counter;
 
                 $x -= 5; // jump five pixels to avoid detecting some grey artifacts as scale again
