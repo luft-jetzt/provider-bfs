@@ -9,17 +9,19 @@ use PHPUnit\Framework\TestCase;
 
 class HourRangeModelTest extends TestCase
 {
-    public function testStartHour()
+    public function testRange6To21(): void
     {
-        $hourRangeModel = new HourRangeModel(6, 21);
+        $model = new HourRangeModel(6, 21);
 
-        $this->assertEquals(6, $hourRangeModel->getStartHour());
+        $this->assertEquals(6, $model->getStartHour());
+        $this->assertEquals(21, $model->getEndHour());
     }
 
-    public function testEndHour()
+    public function testRange7To18(): void
     {
-        $hourRangeModel = new HourRangeModel(6, 21);
+        $model = new HourRangeModel(7, 18);
 
-        $this->assertEquals(21, $hourRangeModel->getEndHour());
+        $this->assertEquals(7, $model->getStartHour());
+        $this->assertEquals(18, $model->getEndHour());
     }
 }
