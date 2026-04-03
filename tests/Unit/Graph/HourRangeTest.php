@@ -30,4 +30,16 @@ class HourRangeTest extends TestCase
             [__DIR__.'/../../graph/lueneburg5.png', 7, 18],
         ];
     }
+
+    public function testInvalidScaleWidthThrowsException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid scale width');
+
+        // Create a 1x1 white image — Scale::sizeX() will return 2 (default counter), which is not in RANGE_MAPPING
+        $imagine = new Imagine();
+        $image = $imagine->create(new \Imagine\Image\Box(1, 1));
+
+        HourRange::calculate($image);
+    }
 }
