@@ -80,6 +80,12 @@ class ValueFetcher implements ValueFetcherInterface
             return $response->getContent();
         }
 
-        return file_get_contents($url);
+        $content = file_get_contents($url);
+
+        if (false === $content) {
+            throw new \RuntimeException(sprintf('Could not read file: %s', $url));
+        }
+
+        return $content;
     }
 }

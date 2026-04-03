@@ -14,6 +14,10 @@ class Converter
     {
         preg_match_all('/(\d+)°(\d+)\'((\d+)")?/', $coordinateString, $matches, PREG_SET_ORDER);
 
+        if (\count($matches) < 2) {
+            throw new \InvalidArgumentException(sprintf('Could not parse coordinate string: "%s"', $coordinateString));
+        }
+
         $latDeg = (float) $matches[0][1];
         $latMin = (float) $matches[0][2];
         $latSec = array_key_exists(3, $matches[0]) ? (float) $matches[0][3] : 0;
