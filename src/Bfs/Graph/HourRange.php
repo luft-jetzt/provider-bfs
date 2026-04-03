@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Bfs\Graph;
 
@@ -13,7 +15,6 @@ class HourRange
 
     private function __construct()
     {
-
     }
 
     public static function calculate(ImageInterface $image): HourRangeModel

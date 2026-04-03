@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Command;
 
@@ -18,6 +20,7 @@ abstract class AbstractCommand extends Command
     {
         $cache = $this->createCache();
         $item = $cache->getItem(CacheInterface::CACHE_KEY);
+
         return $item->get();
     }
 

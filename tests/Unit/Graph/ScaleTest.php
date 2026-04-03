@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Tests\Unit\Graph;
 
@@ -30,11 +32,11 @@ class ScaleTest extends TestCase
     public static function graphFilenameProvider(): array
     {
         return [
-            [__DIR__ . '/../../graph/hamburg1.png', 20, 16],
-            [__DIR__ . '/../../graph/lueneburg1.png', 14, 16],
-            [__DIR__ . '/../../graph/lueneburg5.png', 10, 12],
-            [__DIR__ . '/../../graph/schneefernhaus1.png', 24, 16],
-            [__DIR__ . '/../../graph/schneefernhaus2.png', 24, 16],
+            [__DIR__.'/../../graph/hamburg1.png', 20, 16],
+            [__DIR__.'/../../graph/lueneburg1.png', 14, 16],
+            [__DIR__.'/../../graph/lueneburg5.png', 10, 12],
+            [__DIR__.'/../../graph/schneefernhaus1.png', 24, 16],
+            [__DIR__.'/../../graph/schneefernhaus2.png', 24, 16],
         ];
     }
 }

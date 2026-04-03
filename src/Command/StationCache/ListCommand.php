@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Command\StationCache;
 
@@ -24,14 +26,14 @@ class ListCommand extends AbstractCommand
 
         $io->info(sprintf('There are %d stations saved in cache', count($stationList)));
 
-        $io->table(['Station Code', 'Title', 'Latitude', 'Longitude', 'Url', 'Image'], array_map(function(StationModel $station): array {
+        $io->table(['Station Code', 'Title', 'Latitude', 'Longitude', 'Url', 'Image'], array_map(function (StationModel $station): array {
             return [
                 $station->getStationCode(),
                 $station->getTitle(),
                 $station->getLatitude(),
                 $station->getLongitude(),
                 $station->getBfsPageUrl(),
-                $station->getCurrentImageUrl()
+                $station->getCurrentImageUrl(),
             ];
         }, $stationList));
 

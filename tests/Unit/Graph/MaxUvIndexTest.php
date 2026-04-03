@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Tests\Unit\Graph;
 
@@ -21,9 +23,9 @@ class MaxUvIndexTest extends TestCase
     public static function graphFilenameProvider(): array
     {
         return [
-            [__DIR__ . '/../../graph/hamburg1.png', 9],
-            [__DIR__ . '/../../graph/lueneburg1.png', 6],
-            [__DIR__ . '/../../graph/lueneburg5.png', 4],
+            [__DIR__.'/../../graph/hamburg1.png', 9],
+            [__DIR__.'/../../graph/lueneburg1.png', 6],
+            [__DIR__.'/../../graph/lueneburg5.png', 4],
         ];
     }
 }

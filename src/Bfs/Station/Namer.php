@@ -1,8 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Bfs\Station;
 
-use App\Bfs\Coordinate\Coord;
 use App\Bfs\Website\StationModel;
 
 class Namer
@@ -25,7 +26,6 @@ class Namer
 
     private function __construct()
     {
-
     }
 
     public static function generate(StationModel $model): string
