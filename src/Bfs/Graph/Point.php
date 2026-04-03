@@ -21,9 +21,9 @@ class Point
         $width = $size->getWidth();
         $height = $size->getHeight();
 
-        for ($x = 575; $x >= 0; --$x) {
+        for ($x = GraphDimensions::GRAPH_RIGHT_EDGE; $x >= 0; --$x) {
             try {
-                $point = new ImaginePoint($x, $height - 49);
+                $point = new ImaginePoint($x, $height - GraphDimensions::X_AXIS_OFFSET);
             } catch (InvalidArgumentException $invalidArgumentException) {
                 throw new NoPointException('Could not find current point in image.');
             }
@@ -35,7 +35,7 @@ class Point
             }
         }
 
-        for ($y = $height - 49; $y > 0; --$y) {
+        for ($y = $height - GraphDimensions::X_AXIS_OFFSET; $y > 0; --$y) {
             try {
                 $point = new ImaginePoint($x, $y);
             } catch (InvalidArgumentException $invalidArgumentException) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Bfs\Fetcher;
 
 use App\Bfs\Graph\CurrentDateTime;
+use App\Bfs\Graph\GraphDimensions;
 use App\Bfs\Graph\HourRange;
 use App\Bfs\Graph\Maintenance;
 use App\Bfs\Graph\Point;
@@ -54,7 +55,7 @@ class ValueFetcher implements ValueFetcherInterface
 
         $currentPoint = Point::detectCurrentPoint($image);
 
-        $y = 385 - $currentPoint->getY() + 50;
+        $y = GraphDimensions::GRAPH_HEIGHT - $currentPoint->getY() + GraphDimensions::Y_AXIS_OFFSET;
 
         $uvIndex = round((($y / $stepSize) + 1) / 2, 1);
 
