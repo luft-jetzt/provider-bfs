@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class MaintenanceTest extends TestCase
 {
     #[DataProvider('graphFilenameProvider')]
-    public function testPoint(string $graphFilename, bool $expectedResult): void
+    public function testIsMaintenance(string $graphFilename, bool $expectedResult): void
     {
         $imagine = new Imagine();
         $image = $imagine->open($graphFilename);

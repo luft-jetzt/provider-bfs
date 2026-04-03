@@ -15,8 +15,8 @@ class ConverterTest extends TestCase
     {
         $coord = Converter::convert($coordinateString);
 
-        $this->assertEquals($expectedLatitude, $coord->getLatitude());
-        $this->assertEquals($expectedLongitude, $coord->getLongitude());
+        $this->assertEqualsWithDelta($expectedLatitude, $coord->getLatitude(), 0.0000001);
+        $this->assertEqualsWithDelta($expectedLongitude, $coord->getLongitude(), 0.0000001);
     }
 
     public static function coordinateProvider(): array

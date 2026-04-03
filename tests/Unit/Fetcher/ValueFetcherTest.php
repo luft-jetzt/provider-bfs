@@ -13,6 +13,11 @@ use PHPUnit\Framework\TestCase;
 
 class ValueFetcherTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        Carbon::setTestNow();
+    }
+
     #[DataProvider('graphFilenameProvider')]
     public function testValueFetcher(string $currentImageUrl, float $expectedUvIndex, Carbon $expectedDateTime, Carbon $currentDateTime): void
     {

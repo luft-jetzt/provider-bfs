@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class ScaleTest extends TestCase
 {
     #[DataProvider('graphFilenameProvider')]
-    public function testSizeY(string $graphFilename, int $expectedYSize, int $expecteXSize): void
+    public function testSizeY(string $graphFilename, int $expectedYSize, int $expectedXSize): void
     {
         $imagine = new Imagine();
         $image = $imagine->open($graphFilename);
