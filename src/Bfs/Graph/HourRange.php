@@ -28,6 +28,6 @@ class HourRange
             );
         }
 
-        throw new \Exception(sprintf('Invalid scale width %d for hour range.', $xScaleWidth));
+        throw new \InvalidArgumentException(sprintf('Invalid scale width %d for hour range.', $xScaleWidth));
     }
 }
