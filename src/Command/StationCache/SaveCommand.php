@@ -8,6 +8,7 @@ use App\Bfs\Station\Namer;
 use App\Bfs\Website\StationLinkExtractorInterface;
 use App\Bfs\Website\StationPageParserInterface;
 use App\Command\AbstractCommand;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,10 +22,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class SaveCommand extends AbstractCommand
 {
     public function __construct(
+        AdapterInterface $stationCache,
         private readonly StationLinkExtractorInterface $linkExtractor,
         private readonly StationPageParserInterface $pageParser,
     ) {
-        parent::__construct();
+        parent::__construct($stationCache);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

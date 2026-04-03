@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Bfs\Website;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class StationLinkExtractor implements StationLinkExtractorInterface
 {
+    public function __construct(private readonly HttpClientInterface $httpClient)
+    {
+    }
+
     public function parseStationLinks(): array
     {
         $htmlContent = $this->loadPageContent();
@@ -30,8 +34,7 @@ class StationLinkExtractor implements StationLinkExtractorInterface
 
     protected function loadPageContent(): string
     {
-        $httpClient = HttpClient::create();
-        $response = $httpClient->request('GET', self::PAGE_URL);
+        $response = $this->httpClient->request('GET', self::PAGE_URL);
 
         return $response->getContent();
     }
