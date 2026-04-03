@@ -9,6 +9,7 @@ use App\Bfs\Website\StationModel;
 use App\Command\AbstractCommand;
 use Caldera\LuftApiBundle\Api\ValueApi;
 use Caldera\LuftModel\Model\Value;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,8 +23,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class FetchCommand extends AbstractCommand
 {
-    public function __construct(private readonly ValueFetcherInterface $valueFetcher, private readonly ValueApi $valueApi)
-    {
+    public function __construct(
+        private readonly ValueFetcherInterface $valueFetcher,
+        private readonly ValueApi $valueApi,
+        private readonly LoggerInterface $logger,
+    ) {
         parent::__construct();
     }
 
@@ -49,6 +53,7 @@ class FetchCommand extends AbstractCommand
         }
 
         $valueList = [];
+        $failedStations = [];
 
         if ($output->isVerbose()) {
             $io->progressStart(count($stationList));
@@ -59,7 +64,19 @@ class FetchCommand extends AbstractCommand
             try {
                 $value = $this->valueFetcher->fromStation($station);
             } catch (\Exception $exception) {
-                $io->error(sprintf('Error fetching value for station %s (%s): %s', $station->getTitle(), $station->getStationCode(), $exception->getMessage()));
+                $failedStations[] = $station->getStationCode();
+
+                $this->logger->error('Error fetching value for station {station} ({code}): {message}', [
+                    'station' => $station->getTitle(),
+                    'code' => $station->getStationCode(),
+                    'message' => $exception->getMessage(),
+                    'exception' => $exception,
+                ]);
+
+                if ($output->isVerbose()) {
+                    $io->warning(sprintf('Station %s (%s): %s', $station->getTitle(), $station->getStationCode(), $exception->getMessage()));
+                }
+
                 continue;
             }
 
@@ -85,6 +102,10 @@ class FetchCommand extends AbstractCommand
                     $value->getValue(),
                 ];
             }, $valueList));
+        }
+
+        if ($failedStations) {
+            $io->warning(sprintf('%d station(s) failed: %s', count($failedStations), implode(', ', $failedStations)));
         }
 
         $this->valueApi->putValues($valueList);
