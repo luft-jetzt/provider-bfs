@@ -156,6 +156,33 @@ class ValueFetcherTest extends TestCase
         ];
     }
 
+    #[DataProvider('disallowedUrlProvider')]
+    public function testDisallowedUrlsAreRejected(string $currentImageUrl): void
+    {
+        $stationModel = new StationModel();
+        $stationModel
+            ->setCurrentImageUrl($currentImageUrl)
+            ->setStationCode('TEST123');
+
+        $valueFetcher = $this->createValueFetcher();
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $valueFetcher->fromStation($stationModel);
+    }
+
+    public static function disallowedUrlProvider(): array
+    {
+        return [
+            'file scheme (LFI)' => ['file:///etc/passwd'],
+            'phar scheme' => ['phar:///tmp/evil.phar'],
+            'ftp scheme' => ['ftp://example.com/x.png'],
+            'SSRF cloud metadata' => ['http://169.254.169.254/latest/meta-data/'],
+            'SSRF localhost' => ['http://127.0.0.1:8080/x.png'],
+            'foreign host' => ['https://evil.example.com/x.png'],
+        ];
+    }
+
     private static function createDateTime(int $hour, int $minute): \DateTime
     {
         return (new \DateTime('now', new \DateTimeZone('Europe/Berlin')))->setTime($hour, $minute);

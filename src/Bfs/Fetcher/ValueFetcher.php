@@ -74,12 +74,27 @@ class ValueFetcher implements ValueFetcherInterface
 
     protected function loadImageContent(string $url): string
     {
-        if (str_starts_with($url, 'https://')) {
-            $response = $this->httpClient->request('GET', $url);
+        // Absolute HTTP(S)-URLs ausschliesslich ueber den HTTP-Client laden (mit Timeout)
+        // und nur fuer erlaubte Hosts. Verhindert SSRF und (via file_get_contents)
+        // file://, phar://, ftp:// gegen interne Ziele.
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+            $host = parse_url($url, PHP_URL_HOST);
+
+            if (!is_string($host) || !$this->isAllowedHost($host)) {
+                throw new \InvalidArgumentException(sprintf('Refusing to load image from disallowed host: %s', $url));
+            }
+
+            $response = $this->httpClient->request('GET', $url, ['timeout' => 10]);
 
             return $response->getContent();
         }
 
+        // Jedes andere URL-Schema (file://, phar://, ftp:// ...) ablehnen.
+        if (1 === preg_match('#^[a-zA-Z][a-zA-Z0-9+.\-]*://#', $url)) {
+            throw new \InvalidArgumentException(sprintf('Unsupported URL scheme: %s', $url));
+        }
+
+        // Verbleibend: lokaler Dateipfad (z. B. Test-Fixtures / lokale Caches).
         $content = file_get_contents($url);
 
         if (false === $content) {
@@ -87,5 +102,12 @@ class ValueFetcher implements ValueFetcherInterface
         }
 
         return $content;
+    }
+
+    private function isAllowedHost(string $host): bool
+    {
+        $host = strtolower($host);
+
+        return 'bfs.de' === $host || str_ends_with($host, '.bfs.de');
     }
 }
