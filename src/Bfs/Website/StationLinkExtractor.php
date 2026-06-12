@@ -18,7 +18,10 @@ class StationLinkExtractor implements StationLinkExtractorInterface
     {
         $htmlContent = $this->loadPageContent();
 
-        $crawler = new Crawler($htmlContent);
+        // Inhalt explizit als HTML parsen (kein Content-Sniffing), damit eine mit
+        // <?xml beginnende Antwort nie versehentlich den XML-Pfad triggert.
+        $crawler = new Crawler();
+        $crawler->addHtmlContent($htmlContent);
 
         $links = $crawler
             ->filter('#main #content ul li a')
