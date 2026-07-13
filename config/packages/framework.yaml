@@ -9,6 +9,12 @@ framework:
     #esi: true
     #fragments: true
 
+    # Prevent a hanging upstream (BfS website / image) from blocking the cron job.
+    http_client:
+        default_options:
+            timeout: 10
+            max_duration: 30
+
     serializer:
         name_converter: 'serializer.name_converter.camel_case_to_snake_case'
         default_context:
