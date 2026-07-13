@@ -21,7 +21,13 @@ abstract class AbstractCommand extends Command
     {
         $item = $this->stationCache->getItem(CacheInterface::CACHE_KEY);
 
-        return $item->get();
+        if (!$item->isHit()) {
+            return [];
+        }
+
+        $stationList = $item->get();
+
+        return is_array($stationList) ? $stationList : [];
     }
 
     /** @param array<string, StationModel> $stationList */
