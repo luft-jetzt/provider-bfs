@@ -16,7 +16,7 @@ class StepSize
     {
         $maxUvIndex = MaxUvIndex::detectMaxUvIndex($image);
 
-        $size = round(385 / ($maxUvIndex * 2));
+        $size = round(GraphDimensions::GRAPH_HEIGHT / ($maxUvIndex * 2));
 
         return $size;
     }
