@@ -2,4 +2,5 @@ caldera_luftapi:
   api:
     hostname: luft.jetzt
     port: 443
-    verify: false
+    # TLS peer/host verification for all requests to the luft.jetzt API.
+    verify: true
