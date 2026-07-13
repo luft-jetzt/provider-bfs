@@ -18,7 +18,11 @@ class StationLinkExtractor implements StationLinkExtractorInterface
     {
         $htmlContent = $this->loadPageContent();
 
-        $crawler = new Crawler($htmlContent);
+        // Force HTML parsing instead of the crawler's content sniffing, which
+        // would fall back to the XML parser (and XXE surface) for a response
+        // that happens to start with "<?xml".
+        $crawler = new Crawler();
+        $crawler->addHtmlContent($htmlContent);
 
         $links = $crawler
             ->filter('#main #content ul li a')

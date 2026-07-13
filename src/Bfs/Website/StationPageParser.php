@@ -16,7 +16,12 @@ class StationPageParser implements StationPageParserInterface
 
     public function parse(string $url): StationModel
     {
-        $crawler = new Crawler($this->loadPageContent($url));
+        // Force HTML parsing instead of relying on the crawler's content
+        // sniffing, which would switch to the XML parser (and XXE surface) for a
+        // response that happens to start with "<?xml".
+        $crawler = new Crawler();
+        $crawler->addHtmlContent($this->loadPageContent($url));
+
         $station = new StationModel();
 
         $coordinateString = $crawler->filter('table tbody tr:nth-child(4) td:nth-child(2)')->html();
