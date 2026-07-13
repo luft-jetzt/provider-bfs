@@ -156,6 +156,33 @@ class ValueFetcherTest extends TestCase
         ];
     }
 
+    #[DataProvider('disallowedImageUrlProvider')]
+    public function testRejectsUntrustedImageUrl(string $imageUrl): void
+    {
+        $stationModel = new StationModel();
+        $stationModel
+            ->setCurrentImageUrl($imageUrl)
+            ->setStationCode('TEST123');
+
+        $valueFetcher = $this->createValueFetcher();
+
+        $this->expectException(\RuntimeException::class);
+
+        $valueFetcher->fromStation($stationModel);
+    }
+
+    public static function disallowedImageUrlProvider(): array
+    {
+        return [
+            'file scheme (local file disclosure)' => ['file:///etc/passwd'],
+            'phar scheme (object deserialization)' => ['phar:///tmp/evil.phar'],
+            'ftp scheme' => ['ftp://example.com/image.png'],
+            'internal host via http (SSRF)' => ['http://169.254.169.254/latest/meta-data/'],
+            'untrusted https host' => ['https://evil.example.com/image.png'],
+            'lookalike host' => ['https://bfs.de.evil.example.com/image.png'],
+        ];
+    }
+
     private static function createDateTime(int $hour, int $minute): \DateTime
     {
         return (new \DateTime('now', new \DateTimeZone('Europe/Berlin')))->setTime($hour, $minute);

@@ -17,6 +17,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ValueFetcher implements ValueFetcherInterface
 {
+    private const string ALLOWED_IMAGE_HOST = 'bfs.de';
+
     private ?\DateTime $now = null;
 
     public function __construct(private readonly HttpClientInterface $httpClient)
@@ -74,12 +76,32 @@ class ValueFetcher implements ValueFetcherInterface
 
     protected function loadImageContent(string $url): string
     {
-        if (str_starts_with($url, 'https://')) {
+        // A URL with a scheme is treated as a remote resource. Only http(s) to
+        // the trusted BfS host is allowed, and it is always fetched through the
+        // HTTP client. This prevents SSRF and local file disclosure via
+        // untrusted schemes (file://, phar://, data://, ...) or hosts scraped
+        // from the BfS station page. parse_url() cannot be trusted for scheme
+        // detection here (it returns false for e.g. "phar:///..."), so the
+        // scheme is extracted directly.
+        if (preg_match('#^([a-zA-Z][a-zA-Z0-9+.\-]*):#', $url, $matches)) {
+            $scheme = strtolower($matches[1]);
+
+            if ('http' !== $scheme && 'https' !== $scheme) {
+                throw new \RuntimeException(sprintf('Refusing to load image from disallowed URL scheme "%s": %s', $scheme, $url));
+            }
+
+            $host = parse_url($url, PHP_URL_HOST);
+
+            if (!is_string($host) || !self::isAllowedHost($host)) {
+                throw new \RuntimeException(sprintf('Refusing to load image from untrusted host: %s', $url));
+            }
+
             $response = $this->httpClient->request('GET', $url);
 
             return $response->getContent();
         }
 
+        // No scheme: a local filesystem path (used by tests and fixtures).
         $content = file_get_contents($url);
 
         if (false === $content) {
@@ -87,5 +109,12 @@ class ValueFetcher implements ValueFetcherInterface
         }
 
         return $content;
+    }
+
+    private static function isAllowedHost(string $host): bool
+    {
+        $host = strtolower($host);
+
+        return self::ALLOWED_IMAGE_HOST === $host || str_ends_with($host, '.'.self::ALLOWED_IMAGE_HOST);
     }
 }
