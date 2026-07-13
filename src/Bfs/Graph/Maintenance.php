@@ -31,9 +31,13 @@ class Maintenance
     {
         $black = $image->palette()->color('000');
 
-        $edgeCounter = 0;
-
         foreach (self::POINT_LISTS as $pointList) {
+            // The counter must be evaluated per point list. A maintenance box is
+            // only present when a single list has all of its edges black;
+            // accumulating across lists produced false positives (e.g. 2 black
+            // edges in each list).
+            $edgeCounter = 0;
+
             foreach ($pointList as $point) {
                 $imagePoint = new ImaginePoint($point[0], $point[1]);
 
